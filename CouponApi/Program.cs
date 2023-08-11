@@ -29,4 +29,18 @@ app.UseAuthorization();
 
 app.MapControllers();
 
+applyMigration();
+
 app.Run();
+
+void applyMigration()
+{
+    using (var scope = app.Services.CreateScope())
+    {
+        var _db = scope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
+        if (_db.Database.GetAppliedMigrations().Any())
+        {
+            _db.Database.Migrate();
+        }
+    }
+}
