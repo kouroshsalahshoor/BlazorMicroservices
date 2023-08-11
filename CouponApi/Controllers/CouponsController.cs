@@ -42,8 +42,78 @@ namespace CouponApi.Controllers
         {
             try
             {
-                var result = _db.Coupons.FirstOrDefault(x => x.Id == id);
+                var result = _db.Coupons.First(x => x.Id == id);
                 _response.Result = _mapper.Map<CouponDto>(result);
+            }
+            catch (Exception e)
+            {
+                _response.IsSuccessful = false;
+                _response.Message = e.Message;
+            }
+            return _response;
+        }
+        [HttpGet("GetByCode/{code}")]
+        public ResponseDto Get(string code)
+        {
+            try
+            {
+                var result = _db.Coupons.First(x => x.Code.ToLower() == code.ToLower());
+                _response.Result = _mapper.Map<CouponDto>(result);
+            }
+            catch (Exception e)
+            {
+                _response.IsSuccessful = false;
+                _response.Message = e.Message;
+            }
+            return _response;
+        }
+
+        [HttpPost]
+        public ResponseDto Post([FromBody] CouponDto dto)
+        {
+            try
+            {
+                var model = _mapper.Map<Coupon>(dto);
+                _db.Coupons.Add(model);
+                _db.SaveChanges();
+
+                _response.Result = _mapper.Map<CouponDto>(model);
+            }
+            catch (Exception e)
+            {
+                _response.IsSuccessful = false;
+                _response.Message = e.Message;
+            }
+            return _response;
+        }
+
+        [HttpPut]
+        public ResponseDto Put([FromBody] CouponDto dto)
+        {
+            try
+            {
+                var model = _mapper.Map<Coupon>(dto);
+                _db.Coupons.Update(model);
+                _db.SaveChanges();
+
+                _response.Result = _mapper.Map<CouponDto>(model);
+            }
+            catch (Exception e)
+            {
+                _response.IsSuccessful = false;
+                _response.Message = e.Message;
+            }
+            return _response;
+        }
+
+        [HttpDelete("{id:int}")]
+        public ResponseDto Delete(int id)
+        {
+            try
+            {
+                var model = _db.Coupons.First(x=> x.Id == id);
+                _db.Coupons.Remove(model);
+                _db.SaveChanges();
             }
             catch (Exception e)
             {
