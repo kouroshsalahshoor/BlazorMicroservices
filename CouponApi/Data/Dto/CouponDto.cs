@@ -1,4 +1,4 @@
-﻿namespace CouponApi.Dto
+﻿namespace CouponApi.Data
 {
     public class CouponDto
     {
