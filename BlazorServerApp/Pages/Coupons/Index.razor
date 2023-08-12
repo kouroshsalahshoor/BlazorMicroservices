@@ -1,0 +1,49 @@
+﻿@page "/coupons"
+@inject ICouponService _couponService
+
+<PageTitle>@_title</PageTitle>
+
+<h3>@_title</h3>
+
+@if (_items == null)
+{
+    <p><em>Loading...</em></p>
+}
+else
+{
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Code</th>
+                <th>Discount</th>
+                <th>Min Amount</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in _items)
+            {
+                <tr>
+                    <td>@item.Id</td>
+                    <td>@item.Code</td>
+                    <td>@item.Discount.ToString("c")</td>
+                    <td>@item.MinAmount</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+
+@code {
+    private string _title = "Coupons Index";
+    private List<CouponDto>? _items;
+
+    protected override async Task OnInitializedAsync()
+    {
+        var response = await _couponService.GetAll();
+        if (response is not null && response.IsSuccessful)
+        {
+            _items = JsonConvert.DeserializeObject<List<CouponDto>>(Convert.ToString(response.Result));
+        }
+    }
+}
