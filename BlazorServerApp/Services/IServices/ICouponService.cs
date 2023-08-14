@@ -1,4 +1,5 @@
 ﻿using BlazorServerApp.Data;
+using BlazorServerApp.Infrastructure;
 
 namespace BlazorServerApp.Services
 {

@@ -1,10 +1,9 @@
-﻿using BlazorServerApp.Data;
-using Newtonsoft.Json;
+﻿using Newtonsoft.Json;
 using System.Net;
 using System.Text;
 using static BlazorServerApp.Infrastructure.SystemConstants;
 
-namespace BlazorServerApp.Services
+namespace BlazorServerApp.Infrastructure
 {
     public class BaseService : IBaseService
     {
@@ -72,7 +71,7 @@ namespace BlazorServerApp.Services
                     Message = e.Message,
                 };
             }
-            
+
         }
     }
 }

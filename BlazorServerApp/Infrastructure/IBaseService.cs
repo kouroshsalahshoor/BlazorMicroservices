@@ -1,6 +1,4 @@
-﻿using BlazorServerApp.Data;
-
-namespace BlazorServerApp.Services
+﻿namespace BlazorServerApp.Infrastructure
 {
     public interface IBaseService
     {

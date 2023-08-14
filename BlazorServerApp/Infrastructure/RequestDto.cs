@@ -1,6 +1,6 @@
 ﻿using static BlazorServerApp.Infrastructure.SystemConstants;
 
-namespace BlazorServerApp.Data
+namespace BlazorServerApp.Infrastructure
 {
     public class RequestDto
     {

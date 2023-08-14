@@ -1,11 +1,12 @@
 ﻿using AutoMapper;
 using CouponApi.Data;
+using CouponApi.Infrastructure;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
 namespace CouponApi.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("api/coupons")]
     [ApiController]
     public class CouponsController : ControllerBase
     {

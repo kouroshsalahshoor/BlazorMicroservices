@@ -18,7 +18,7 @@ namespace BlazorServerApp.Services
             return await _baseService.SendAsync(new RequestDto
             {
                 ApiType = ApiTypes.POST,
-                Url = SystemConstants.CouponApiUrl + "api/coupons/",
+                Url = SystemConstants.CouponApiUrl,
                 Data = couponDto
             });
         }
@@ -28,7 +28,7 @@ namespace BlazorServerApp.Services
             return await _baseService.SendAsync(new RequestDto
             {
                 ApiType = ApiTypes.DELETE,
-                Url = SystemConstants.CouponApiUrl + "api/coupons/" + id
+                Url = SystemConstants.CouponApiUrl + id
             });
         }
 
@@ -37,7 +37,7 @@ namespace BlazorServerApp.Services
             return await _baseService.SendAsync(new RequestDto
             {
                 ApiType = ApiTypes.GET,
-                Url = SystemConstants.CouponApiUrl + "api/coupons"
+                Url = SystemConstants.CouponApiUrl
             });
         }
 
@@ -46,7 +46,7 @@ namespace BlazorServerApp.Services
             return await _baseService.SendAsync(new RequestDto
             {
                 ApiType = ApiTypes.GET,
-                Url = SystemConstants.CouponApiUrl + "api/coupons/GetByCode/" + couponCode
+                Url = SystemConstants.CouponApiUrl + "GetByCode/" + couponCode
             });
         }
 
@@ -55,7 +55,7 @@ namespace BlazorServerApp.Services
             return await _baseService.SendAsync(new RequestDto
             {
                 ApiType = ApiTypes.GET,
-                Url = SystemConstants.CouponApiUrl + "api/coupons/" + id
+                Url = SystemConstants.CouponApiUrl + id
             });
         }
 
@@ -64,7 +64,7 @@ namespace BlazorServerApp.Services
             return await _baseService.SendAsync(new RequestDto
             {
                 ApiType = ApiTypes.PUT,
-                Url = SystemConstants.CouponApiUrl + "api/coupons/",
+                Url = SystemConstants.CouponApiUrl,
                 Data = couponDto
             });
         }

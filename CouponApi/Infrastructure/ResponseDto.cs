@@ -1,4 +1,4 @@
-﻿namespace BlazorServerApp.Data
+﻿namespace CouponApi.Infrastructure
 {
     public class ResponseDto
     {
