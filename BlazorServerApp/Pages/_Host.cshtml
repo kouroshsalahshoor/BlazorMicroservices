@@ -5,4 +5,7 @@
     Layout = "_Layout";
 }
 
-<component type="typeof(App)" render-mode="ServerPrerendered" />
+<component type="typeof(App)" render-mode="Server" />
+@* An unhandled exception occurred while processing the request.
+InvalidOperationException: JavaScript interop calls cannot be issued at this time. This is because the component is being statically rendered. When prerendering is enabled, JavaScript interop calls can only be performed during the OnAfterRenderAsync lifecycle method. *@
+@* <component type="typeof(App)" render-mode="ServerPrerendered" /> *@

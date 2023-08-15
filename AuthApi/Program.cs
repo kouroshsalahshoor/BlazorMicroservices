@@ -1,4 +1,5 @@
 using AuthApi.Data;
+using AuthApi.Infrastructure;
 using AuthApi.Services;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
@@ -10,7 +11,17 @@ var builder = WebApplication.CreateBuilder(args);
 var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
     options.UseSqlServer(connectionString));
-builder.Services.AddIdentity<ApplicationUser, IdentityRole>()
+builder.Services.AddIdentity<ApplicationUser, IdentityRole>(options =>
+{
+    options.SignIn.RequireConfirmedAccount = false;
+
+    options.Password.RequireNonAlphanumeric =false;
+    options.Password.RequiredLength =1;
+    options.Password.RequireDigit =false;
+    options.Password.RequiredUniqueChars =1;
+    options.Password.RequireUppercase =false;
+    options.Password.RequireLowercase =false;
+})
     .AddEntityFrameworkStores<ApplicationDbContext>()
     .AddDefaultTokenProviders();
 

@@ -1,4 +1,4 @@
-﻿using static BlazorServerApp.Infrastructure.SystemConstants;
+﻿using static BlazorServerApp.Infrastructure.ApplicationConstants;
 
 namespace BlazorServerApp.Infrastructure
 {

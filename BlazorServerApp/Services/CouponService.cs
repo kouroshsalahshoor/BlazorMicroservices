@@ -1,6 +1,6 @@
 ﻿using BlazorServerApp.Data;
 using BlazorServerApp.Infrastructure;
-using static BlazorServerApp.Infrastructure.SystemConstants;
+using static BlazorServerApp.Infrastructure.ApplicationConstants;
 
 namespace BlazorServerApp.Services
 {
@@ -18,7 +18,7 @@ namespace BlazorServerApp.Services
             return await _baseService.SendAsync(new RequestDto
             {
                 ApiType = ApiTypes.POST,
-                Url = SystemConstants.CouponApiUrl,
+                Url = ApplicationConstants.CouponApiUrl,
                 Data = couponDto
             });
         }
@@ -28,7 +28,7 @@ namespace BlazorServerApp.Services
             return await _baseService.SendAsync(new RequestDto
             {
                 ApiType = ApiTypes.DELETE,
-                Url = SystemConstants.CouponApiUrl + id
+                Url = ApplicationConstants.CouponApiUrl + id
             });
         }
 
@@ -37,7 +37,7 @@ namespace BlazorServerApp.Services
             return await _baseService.SendAsync(new RequestDto
             {
                 ApiType = ApiTypes.GET,
-                Url = SystemConstants.CouponApiUrl
+                Url = ApplicationConstants.CouponApiUrl
             });
         }
 
@@ -46,7 +46,7 @@ namespace BlazorServerApp.Services
             return await _baseService.SendAsync(new RequestDto
             {
                 ApiType = ApiTypes.GET,
-                Url = SystemConstants.CouponApiUrl + "GetByCode/" + couponCode
+                Url = ApplicationConstants.CouponApiUrl + "GetByCode/" + couponCode
             });
         }
 
@@ -55,7 +55,7 @@ namespace BlazorServerApp.Services
             return await _baseService.SendAsync(new RequestDto
             {
                 ApiType = ApiTypes.GET,
-                Url = SystemConstants.CouponApiUrl + id
+                Url = ApplicationConstants.CouponApiUrl + id
             });
         }
 
@@ -64,7 +64,7 @@ namespace BlazorServerApp.Services
             return await _baseService.SendAsync(new RequestDto
             {
                 ApiType = ApiTypes.PUT,
-                Url = SystemConstants.CouponApiUrl,
+                Url = ApplicationConstants.CouponApiUrl,
                 Data = couponDto
             });
         }

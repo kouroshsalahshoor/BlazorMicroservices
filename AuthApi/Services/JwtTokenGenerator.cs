@@ -1,4 +1,5 @@
 ﻿using AuthApi.Data;
+using AuthApi.Infrastructure;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 using System.IdentityModel.Tokens.Jwt;
@@ -22,8 +23,8 @@ namespace AuthApi.Services
                 new Claim(JwtRegisteredClaimNames.Sub, user.Id),
                 new Claim(JwtRegisteredClaimNames.Name, user.UserName),
                 new Claim(JwtRegisteredClaimNames.Email, user.Email),
-                new Claim("FirstName", user.FirstName),
-                new Claim("LastName", user.LastName),
+                //new Claim("FirstName", user.FirstName),
+                //new Claim("LastName", user.LastName),
             };
 
             var key = Encoding.ASCII.GetBytes(_jwtOptions.Secret);

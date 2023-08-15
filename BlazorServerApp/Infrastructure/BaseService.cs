@@ -1,7 +1,8 @@
 ﻿using Newtonsoft.Json;
 using System.Net;
+using System.Net.Http.Headers;
 using System.Text;
-using static BlazorServerApp.Infrastructure.SystemConstants;
+using static BlazorServerApp.Infrastructure.ApplicationConstants;
 
 namespace BlazorServerApp.Infrastructure
 {
@@ -21,7 +22,10 @@ namespace BlazorServerApp.Infrastructure
                 var client = _httpClientFactory.CreateClient("BlazorMicroservicesApp");
                 HttpRequestMessage message = new();
                 message.Headers.Add("Accept", "application/json");
-                //todo: token
+                
+                //token
+                client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("bearer", requestDto.Token);
+
                 message.RequestUri = new Uri(requestDto.Url);
                 if (requestDto.Data is not null)
                 {

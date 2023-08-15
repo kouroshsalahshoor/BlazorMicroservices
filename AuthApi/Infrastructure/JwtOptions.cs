@@ -1,4 +1,4 @@
-﻿namespace AuthApi.Data
+﻿namespace AuthApi.Infrastructure
 {
     public class JwtOptions
     {
