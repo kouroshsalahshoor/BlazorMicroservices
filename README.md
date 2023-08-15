@@ -1,4 +1,4 @@
-# BlazorMicroservices
+# Blazor Microservices
 Blazor Server Side with .Net 6 and Microservices <br />
 <br />
 Based on:
