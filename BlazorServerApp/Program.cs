@@ -1,10 +1,7 @@
 using BlazorServerApp.Data;
 using BlazorServerApp.Infrastructure;
 using BlazorServerApp.Services;
-using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Authorization;
-using Microsoft.AspNetCore.Components.Web;
-using Microsoft.AspNetCore.Identity;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -27,6 +24,7 @@ builder.Services.AddHttpClient<IAuthService, AuthService>();
 builder.Services.AddScoped<IBaseService, BaseService>();
 builder.Services.AddScoped<ICouponService, CouponService>();
 builder.Services.AddScoped<IAuthService, AuthService>();
+builder.Services.AddScoped<ITokenProviderService, TokenProviderService>();
 builder.Services.AddSingleton<WeatherForecastService>();
 
 var app = builder.Build();

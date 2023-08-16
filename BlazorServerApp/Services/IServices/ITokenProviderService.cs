@@ -2,8 +2,8 @@
 {
     public interface ITokenProviderService
     {
-        void SetToken(string token);
-        string? GetToken();
-        void ClearToken();
+        Task SetToken(string token);
+        Task<string?> GetToken();
+        Task ClearToken();
     }
 }

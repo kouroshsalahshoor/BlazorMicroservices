@@ -19,7 +19,7 @@ namespace BlazorServerApp.Services
                 ApiType = ApiTypes.POST,
                 Url = ApplicationConstants.AuthApiUrl + "assigntorole",
                 Data = registerDto
-            });
+            }, false);
         }
 
         public async Task<ResponseDto?> Login(LoginRequestDto loginRequest)
@@ -29,7 +29,7 @@ namespace BlazorServerApp.Services
                 ApiType = ApiTypes.POST,
                 Url = ApplicationConstants.AuthApiUrl + "login",
                 Data = loginRequest
-            });
+            }, false);
         }
 
         public async Task<ResponseDto?> Register(RegisterDto registerDto)
@@ -39,7 +39,7 @@ namespace BlazorServerApp.Services
                 ApiType = ApiTypes.POST,
                 Url = ApplicationConstants.AuthApiUrl + "register",
                 Data = registerDto
-            });
+            }, false);
         }
     }
 }

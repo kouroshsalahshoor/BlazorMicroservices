@@ -1,4 +1,5 @@
-﻿using Newtonsoft.Json;
+﻿using BlazorServerApp.Services;
+using Newtonsoft.Json;
 using System.Net;
 using System.Net.Http.Headers;
 using System.Text;
@@ -9,22 +10,28 @@ namespace BlazorServerApp.Infrastructure
     public class BaseService : IBaseService
     {
         private readonly IHttpClientFactory _httpClientFactory;
+        private readonly ITokenProviderService _tokenProviderService;
 
-        public BaseService(IHttpClientFactory httpClientFactory)
+        public BaseService(IHttpClientFactory httpClientFactory, ITokenProviderService tokenProviderService)
         {
             _httpClientFactory = httpClientFactory;
+            _tokenProviderService = tokenProviderService;
         }
 
-        public async Task<ResponseDto?> SendAsync(RequestDto requestDto)
+        public async Task<ResponseDto?> SendAsync(RequestDto requestDto, bool withBearer = true)
         {
             try
             {
                 var client = _httpClientFactory.CreateClient("BlazorMicroservicesApp");
                 HttpRequestMessage message = new();
                 message.Headers.Add("Accept", "application/json");
-                
-                //token
-                client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("bearer", requestDto.Token);
+
+                if (withBearer)
+                {
+                    var token = await _tokenProviderService.GetToken();
+                    message.Headers.Add("Authorization", $"Bearer {token}");
+                    //client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("bearer", requestDto.Token);
+                }
 
                 message.RequestUri = new Uri(requestDto.Url);
                 if (requestDto.Data is not null)
