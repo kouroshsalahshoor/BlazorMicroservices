@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using CouponApi.Data;
 using CouponApi.Infrastructure;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
@@ -8,6 +9,7 @@ namespace CouponApi.Controllers
 {
     [Route("api/coupons")]
     [ApiController]
+    [Authorize]
     public class CouponsController : ControllerBase
     {
         private ApplicationDbContext _db { get; set; }
