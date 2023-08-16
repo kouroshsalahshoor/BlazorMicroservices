@@ -16,16 +16,18 @@ namespace AuthApi.Services
         {
             _jwtOptions = jwtOptions.Value;
         }
-        public string GenerateToken(ApplicationUser user)
+        public string GenerateToken(ApplicationUser user, IEnumerable<string> roles)
         {
             var claims = new List<Claim>
             {
                 new Claim(JwtRegisteredClaimNames.Sub, user.Id),
                 new Claim(JwtRegisteredClaimNames.Name, user.UserName),
                 new Claim(JwtRegisteredClaimNames.Email, user.Email),
-                //new Claim("FirstName", user.FirstName),
-                //new Claim("LastName", user.LastName),
+                new Claim("firstName", user.FirstName),
+                new Claim("lastName", user.LastName),
             };
+
+            claims.AddRange(roles.Select(x => new Claim(ClaimTypes.Role, x)));
 
             var key = Encoding.ASCII.GetBytes(_jwtOptions.Secret);
 

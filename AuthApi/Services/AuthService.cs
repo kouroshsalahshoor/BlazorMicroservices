@@ -50,7 +50,8 @@ namespace AuthApi.Services
                 return new LoginResponseDto();
             }
 
-            var token = _jwtTokenGenerator.GenerateToken(user);
+            var roles = await _userManager.GetRolesAsync(user);
+            var token = _jwtTokenGenerator.GenerateToken(user, roles);
 
             var userDto = new UserDto
             {

@@ -13,7 +13,6 @@ builder.Services.AddRazorPages();
 builder.Services.AddServerSideBlazor();
 
 //added
-//builder.Services.AddAuthenticationCore();
 builder.Services.AddScoped<AuthenticationStateProvider, AuthStateProvider>();
 
 ApplicationConstants.CouponApiUrl = builder.Configuration["ServiceUrls:CouponApiUrl"];
@@ -28,7 +27,6 @@ builder.Services.AddHttpClient<IAuthService, AuthService>();
 builder.Services.AddScoped<IBaseService, BaseService>();
 builder.Services.AddScoped<ICouponService, CouponService>();
 builder.Services.AddScoped<IAuthService, AuthService>();
-//builder.Services.AddScoped<ITokenProviderService, TokenProviderService>();
 builder.Services.AddSingleton<WeatherForecastService>();
 
 var app = builder.Build();

@@ -22,7 +22,7 @@ namespace BlazorServerApp.Infrastructure
 
         public override async Task<AuthenticationState> GetAuthenticationStateAsync()
         {
-            var result = 
+            var result =
                 await _protectedLocalStore.GetAsync<string>(ApplicationConstants.AuthTokenName);
             var token = result.Success ? result.Value : string.Empty;
 
@@ -35,14 +35,14 @@ namespace BlazorServerApp.Infrastructure
             return new AuthenticationState(
                 new ClaimsPrincipal(
                     new ClaimsIdentity(
-                JwtParser.ParseClaimsFromJwt(token), "jwtAuthType")));
+                        JwtParser.ParseClaimsFromJwt(token), "jwtAuthType")));
         }
 
         public void NotifyUserAuthentication(string token)
         {
             var authenticatedUser = new ClaimsPrincipal(
                     new ClaimsIdentity(
-                JwtParser.ParseClaimsFromJwt(token), "jwtAuthType"));
+                        JwtParser.ParseClaimsFromJwt(token), "jwtAuthType"));
             var authState = Task.FromResult(new AuthenticationState(authenticatedUser));
             NotifyAuthenticationStateChanged(authState);
         }
