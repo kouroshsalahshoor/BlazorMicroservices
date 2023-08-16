@@ -48,7 +48,7 @@ namespace AuthApi.Controllers
         [HttpPost("assigntorole")]
         public async Task<IActionResult> AssignToRole([FromBody] RegisterDto registerDto)
         {
-            var succeeded = await _authService.AssignToRole(registerDto.UserName, registerDto.RoleName.ToUpper());
+            var succeeded = await _authService.AssignToRole(registerDto.UserName, registerDto.RoleName);
             if (!succeeded)
             {
                 _response.IsSuccessful = false;

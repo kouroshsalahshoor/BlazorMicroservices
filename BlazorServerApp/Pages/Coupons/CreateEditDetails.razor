@@ -7,6 +7,11 @@
 
 <h3>@_title</h3>
 
+@if (string.IsNullOrEmpty(_error) == false)
+{
+    <p class="text-danger">@_error</p>
+}
+
 <div>
     <EditForm Model="@_model" OnValidSubmit="@submit">
         <DataAnnotationsValidator />
@@ -61,6 +66,7 @@
     private string _title = "";
     private CouponDto _model = new();
     private bool _disabled { get; set; } = false;
+    private string? _error = string.Empty;
 
     protected override async Task OnParametersSetAsync()
     {
@@ -93,12 +99,17 @@
 
     private async Task submit()
     {
+        _error = string.Empty;
         if (PageType == "create")
         {
             var response = await _couponService.Create(_model);
             if (response is not null && response.IsSuccessful)
             {
                 _navigationManager.NavigateTo("/coupons");
+            }
+            else
+            {
+                _error = response is null ? "Create Error" : response.Message;
             }
         }
         else if (PageType == "edit")
@@ -107,6 +118,10 @@
             if (response is not null && response.IsSuccessful)
             {
                 _navigationManager.NavigateTo("/coupons");
+            }
+            else
+            {
+                _error = response is null ? "Create Error" : response.Message;
             }
         }
     }

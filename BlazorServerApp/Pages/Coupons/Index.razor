@@ -26,11 +26,15 @@ else
                     <th>Code</th>
                     <th>Discount</th>
                     <th>Min Amount</th>
+                    @* <AuthorizeView Roles="@(ApplicationConstants.Roles.Admins)">
+                <Authorized> *@
                     <th>
                         <a class="btn btn-sm btn-primary" href="coupon/create" title="Create">
                             <span class="oi oi-plus" aria-hidden="true"></span>
                         </a>
                     </th>
+                    @*</Authorized>
+                </AuthorizeView>*@
                 </tr>
             </thead>
             <tbody>
@@ -41,6 +45,8 @@ else
                         <td>@item.Code</td>
                         <td>@item.Discount.ToString("c")</td>
                         <td>@item.MinAmount.ToString("c")</td>
+                        @* <AuthorizeView Roles="@(ApplicationConstants.Roles.Admins)">
+                <Authorized> *@
                         <td>
                             <button class="btn btn-sm btn-danger" @onclick="@(async ()=> await delete(item.Id))" title="Delete">
                                 <span class="oi oi-trash" aria-hidden="true"></span>
@@ -52,6 +58,9 @@ else
                                 <span class="oi oi-eye" aria-hidden="true"></span>
                             </a>
                         </td>
+                        @* </Authorized>
+                </AuthorizeView> *@
+
                     </tr>
                 }
             </tbody>
@@ -85,7 +94,7 @@ else
 
     private async Task delete(int id)
     {
-        if(await _js.InvokeAsync<bool>("confirm", "Are you sure you want to delete this item?"))
+        if (await _js.InvokeAsync<bool>("confirm", "Are you sure you want to delete this item?"))
         {
             var response = await _couponService.Delete(id);
             if (response is not null && response.IsSuccessful)

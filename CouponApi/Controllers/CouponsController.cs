@@ -30,7 +30,7 @@ namespace CouponApi.Controllers
         {
             try
             {
-                var result =_db.Coupons.ToList();
+                var result = _db.Coupons.ToList();
                 _response.Result = _mapper.Map<List<CouponDto>>(result);
             }
             catch (Exception e)
@@ -72,6 +72,7 @@ namespace CouponApi.Controllers
         }
 
         [HttpPost]
+        [Authorize(Roles = "Admins")]
         public ResponseDto Post([FromBody] CouponDto dto)
         {
             try
@@ -91,6 +92,7 @@ namespace CouponApi.Controllers
         }
 
         [HttpPut]
+        [Authorize(Roles = "Admins")]
         public ResponseDto Put([FromBody] CouponDto dto)
         {
             try
@@ -110,11 +112,12 @@ namespace CouponApi.Controllers
         }
 
         [HttpDelete("{id:int}")]
+        [Authorize(Roles = "Admins")]
         public ResponseDto Delete(int id)
         {
             try
             {
-                var model = _db.Coupons.First(x=> x.Id == id);
+                var model = _db.Coupons.First(x => x.Id == id);
                 _db.Coupons.Remove(model);
                 _db.SaveChanges();
             }
