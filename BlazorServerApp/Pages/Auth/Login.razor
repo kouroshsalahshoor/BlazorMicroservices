@@ -29,7 +29,13 @@
                 <InputText type="password" @bind-Value="_model.Password" class="form-control" placeholder="Password" />
                 <ValidationMessage For="@(()=> _model.Password)" />
             </div>
-            <button type="submit" class="btn btn-primary">Submit</button>
+            <button type="submit" class="btn btn-primary" disabled="@_isLoading">
+                Submit
+                @if (_isLoading)
+                {
+                    <text> loading...</text>
+                }
+            </button>
         </EditForm>
     </div>
 </div>
@@ -38,9 +44,12 @@
 @code {
     private LoginRequestDto _model = new();
     private string _error = string.Empty;
+    private bool _isLoading = false;
 
     private async Task submit()
     {
+        _isLoading = true;
+
         _error = string.Empty;
 
         var response = await _authService.Login(_model);

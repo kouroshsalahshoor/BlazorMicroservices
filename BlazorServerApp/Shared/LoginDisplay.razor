@@ -1,6 +1,7 @@
-﻿<AuthorizeView>
+﻿@* @inject AuthenticationStateProvider _authenticationStateProvider *@
+<AuthorizeView>
     <Authorized>
-        <a href="">Hello, @context.User.Identity?.Name!</a>
+        <a href="">Hello, @_userName</a>
         <a href="LogOut">Log out</a>
     </Authorized>
     <NotAuthorized>
@@ -8,3 +9,18 @@
         <a href="Login">Log in</a>
     </NotAuthorized>
 </AuthorizeView>
+
+@code {
+    [CascadingParameter]
+    public Task<AuthenticationState?> _authState { get; set; }
+
+    private string _userName { get; set; } = string.Empty;
+
+    protected override async Task OnParametersSetAsync()
+    {
+        // var authstate = await _authenticationStateProvider.GetAuthenticationStateAsync();
+        var authstate = await _authState;
+        var user = authstate!.User;
+        _userName = user.Claims.First(x => x.Type == "name")!.Value;
+    }
+}

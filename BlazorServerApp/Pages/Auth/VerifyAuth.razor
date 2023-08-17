@@ -1,0 +1,43 @@
+﻿@page "/VerifyAuth"
+<h3>VerifyAuth</h3>
+
+@if (_user is not null && _user.Identity.IsAuthenticated)
+{
+    <p class="text-success">User is Autheticated</p>
+    <p>Claims: </p>
+    <ul>
+        @foreach (var item in _user.Claims.ToList())
+        {
+            <li>@item.Type @item.Value</li>
+        }
+    </ul>
+
+    <ul>
+        <li>Id: @(_user.Claims.First(x => x.Type == ClaimTypes.Sid)!.Value)</li>
+        <li>UserName: @(_user.Claims.First(x => x.Type == ClaimTypes.Name)!.Value)</li>
+        <li>Email: @(_user.Claims.First(x => x.Type == ClaimTypes.Email)!.Value)</li>
+        <li>First Name: @(_user.Claims.First(x => x.Type == ClaimTypes.GivenName)!.Value)</li>
+        <li>Last Name: @(_user.Claims.First(x => x.Type == ClaimTypes.Surname)!.Value)</li>
+        <li>Last Name: @(_user.Claims.First(x => x.Type == ClaimTypes.Role)!.Value)</li>
+
+        <li>Admins role: @(_user.IsInRole(ApplicationConstants.Roles.Admins) ? ApplicationConstants.Roles.Admins :"")</li>
+        <li>Customers role: @(_user.IsInRole(ApplicationConstants.Roles.Customers) ? ApplicationConstants.Roles.Customers : "")</li>
+    </ul>
+}
+else
+{
+    <p class="text-danger">User is NOT Autheticated</p>
+}
+
+@code {
+    [CascadingParameter]
+    public Task<AuthenticationState> AuthState { get; set; }
+
+    private ClaimsPrincipal? _user;
+
+    protected override async Task OnParametersSetAsync()
+    {
+        var authState = await AuthState;
+        _user = authState.User;
+    }
+}

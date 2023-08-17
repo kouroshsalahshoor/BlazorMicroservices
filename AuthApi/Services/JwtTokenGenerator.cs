@@ -20,11 +20,12 @@ namespace AuthApi.Services
         {
             var claims = new List<Claim>
             {
-                new Claim(JwtRegisteredClaimNames.Sub, user.Id),
-                new Claim(JwtRegisteredClaimNames.Name, user.UserName),
-                new Claim(JwtRegisteredClaimNames.Email, user.Email),
-                new Claim("firstName", user.FirstName),
-                new Claim("lastName", user.LastName),
+                new Claim(ClaimTypes.Sid, user.Id),
+                new Claim(ClaimTypes.Name, user.UserName),
+                new Claim(ClaimTypes.Email, user.Email),
+                new Claim(ClaimTypes.GivenName, user.FirstName),
+                new Claim(ClaimTypes.Surname, user.LastName),
+                //new Claim(JwtRegisteredClaimNames.FamilyName, user.LastName),
             };
 
             claims.AddRange(roles.Select(x => new Claim(ClaimTypes.Role, x)));
