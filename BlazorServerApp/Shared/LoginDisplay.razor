@@ -1,4 +1,4 @@
-﻿@inject AuthenticationStateProvider _authenticationStateProvider
+﻿@* @inject AuthenticationStateProvider _authState *@
 <AuthorizeView>
     <Authorized>
         <a href="">Hello, @_userName</a>
@@ -11,20 +11,18 @@
 </AuthorizeView>
 
 @code {
-    // [CascadingParameter]
-    // public Task<AuthenticationState?> _authState { get; set; }
+    [CascadingParameter]
+    public Task<AuthenticationState?> _authState { get; set; }
 
-    private string _userName { get; set; } = string.Empty;
+    private string? _userName;
 
     // protected override async Task OnParametersSetAsync()
     protected override async Task OnInitializedAsync()
     {
-        var authstate = await _authenticationStateProvider.GetAuthenticationStateAsync();
-        // var authstate = await _authState;
+        var authstate = await _authState;
+        // var authstate = await _authState.GetAuthenticationStateAsync();
         var user = authstate!.User;
-        if (user.Claims.Any())
-        {
-            _userName = user.Claims.FirstOrDefault(x => x.Type == "name")!.Value;
-        }
+        _userName = user!.FindFirst("name")!.Value;
+        // _userName = user!.FindFirst(ClaimTypes.Name)!.Value;
     }
 }

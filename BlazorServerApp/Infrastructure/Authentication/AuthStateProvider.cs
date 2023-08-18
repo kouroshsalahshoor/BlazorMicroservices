@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Components.Authorization;
 using Microsoft.AspNetCore.Components.Server.ProtectedBrowserStorage;
+using Newtonsoft.Json.Linq;
 using System.Net.Http.Headers;
 using System.Security.Claims;
 
@@ -31,7 +32,7 @@ namespace BlazorServerApp.Infrastructure
                 return _anonymous;
             }
 
-            _httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("bearer", token);
+            _httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("bearer", token); //!!!
             return new AuthenticationState(
                 new ClaimsPrincipal(
                     new ClaimsIdentity(
@@ -51,6 +52,7 @@ namespace BlazorServerApp.Infrastructure
         {
             var authState = Task.FromResult(_anonymous);
             NotifyAuthenticationStateChanged(authState);
+            _httpClient.DefaultRequestHeaders.Authorization = null; //!!!
         }
     }
 }

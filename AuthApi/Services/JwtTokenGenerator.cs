@@ -20,11 +20,9 @@ namespace AuthApi.Services
         {
             var claims = new List<Claim>
             {
-                new Claim("id", user.Id),
-                //new Claim(JwtRegisteredClaimNames.Sid, user.Id),
-                //new Claim(ClaimTypes.Sid, user.Id),
-                new Claim(JwtRegisteredClaimNames.Name, user.UserName),
-                new Claim(JwtRegisteredClaimNames.Email, user.Email),
+                new Claim(ClaimTypes.Sid, user.Id),
+                new Claim(ClaimTypes.Name, user.UserName),
+                new Claim(ClaimTypes.Email, user.Email),
                 new Claim("firstName", user.FirstName),
                 new Claim("lastName", user.LastName),
             };

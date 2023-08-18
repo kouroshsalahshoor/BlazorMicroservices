@@ -1,7 +1,7 @@
 ﻿@page "/verifyauth"
 <h3>VerifyAuth</h3>
 
-@if (_user is not null && _user.Identity!.IsAuthenticated)
+@if (_user!.Identity!.IsAuthenticated)
 {
     <p class="text-success">User is Autheticated</p>
     <p>Claims: </p>
@@ -12,18 +12,18 @@
         }
     </ul>
 
-    <ul>
-        <li>Id: @(_user.Claims.First(x => x.Type == "id")!.Value)</li>
-        @* <li>Id: @(_user.Claims.First(x => x.Type == ClaimTypes.Sid)!.Value)</li> *@
-        <li>UserName: @(_user.Claims.First(x => x.Type == "name")!.Value)</li>
-        <li>Email: @(_user.Claims.First(x => x.Type == "email")!.Value)</li>
-        <li>First Name: @(_user.Claims.First(x => x.Type == "firstName")!.Value)</li>
-        <li>Last Name: @(_user.Claims.First(x => x.Type == "lastName")!.Value)</li>
-        <li>Last Name: @(_user.Claims.First(x => x.Type == ClaimTypes.Role)!.Value)</li>
+@*     <ul>
+        <li>Id: @(_user.FindFirst(ClaimTypes.Sid)!.Value)</li>
+        <li>Id: @(_user.Claims.First(x => x.Type == ClaimTypes.Sid)!.Value)</li>
+        <li>UserName: @(_user.FindFirst(ClaimTypes.Name)!.Value)</li>
+        <li>Email: @(_user.FindFirst(ClaimTypes.Email)!.Value)</li>
+        <li>First Name: @(_user.FindFirst("firstName")!.Value)</li>
+        <li>Last Name: @(_user.FindFirst("lastName")!.Value)</li>
+        <li>Role: @(_user.FindFirst(ClaimTypes.Role)!.Value)</li>
 
         <li>Admins role: @(_user.IsInRole(ApplicationConstants.Roles.Admins) ? ApplicationConstants.Roles.Admins :"")</li>
         <li>Customers role: @(_user.IsInRole(ApplicationConstants.Roles.Customers) ? ApplicationConstants.Roles.Customers : "")</li>
-    </ul>
+    </ul> *@
 }
 else
 {
