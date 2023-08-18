@@ -4,6 +4,7 @@
     {
         public enum ApiTypes { GET, POST, PUT, DELETE }
 
+        public static string ProductApiUrl { get; set; }
         public static string CouponApiUrl { get; set; }
         public static string AuthApiUrl { get; set; }
 

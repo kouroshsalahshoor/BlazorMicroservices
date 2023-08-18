@@ -3,13 +3,12 @@ using BlazorServerApp.Infrastructure;
 
 namespace BlazorServerApp.Services
 {
-    public interface ICouponService
+    public interface IProductService
     {
         Task<ResponseDto?> GetAll();
         Task<ResponseDto?> GetById(int id);
-        Task<ResponseDto?> GetByCode(string couponCode);
-        Task<ResponseDto?> Create(CouponDto dto);
-        Task<ResponseDto?> Update(CouponDto dto);
+        Task<ResponseDto?> Create(ProductDto dto);
+        Task<ResponseDto?> Update(ProductDto dto);
         Task<ResponseDto?> Delete(int id);
     }
 }

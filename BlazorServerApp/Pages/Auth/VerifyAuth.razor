@@ -1,7 +1,7 @@
-﻿@page "/VerifyAuth"
+﻿@page "/verifyauth"
 <h3>VerifyAuth</h3>
 
-@if (_user is not null && _user.Identity.IsAuthenticated)
+@if (_user is not null && _user.Identity!.IsAuthenticated)
 {
     <p class="text-success">User is Autheticated</p>
     <p>Claims: </p>
@@ -13,11 +13,12 @@
     </ul>
 
     <ul>
-        <li>Id: @(_user.Claims.First(x => x.Type == ClaimTypes.Sid)!.Value)</li>
-        <li>UserName: @(_user.Claims.First(x => x.Type == ClaimTypes.Name)!.Value)</li>
-        <li>Email: @(_user.Claims.First(x => x.Type == ClaimTypes.Email)!.Value)</li>
-        <li>First Name: @(_user.Claims.First(x => x.Type == ClaimTypes.GivenName)!.Value)</li>
-        <li>Last Name: @(_user.Claims.First(x => x.Type == ClaimTypes.Surname)!.Value)</li>
+        <li>Id: @(_user.Claims.First(x => x.Type == "id")!.Value)</li>
+        @* <li>Id: @(_user.Claims.First(x => x.Type == ClaimTypes.Sid)!.Value)</li> *@
+        <li>UserName: @(_user.Claims.First(x => x.Type == "name")!.Value)</li>
+        <li>Email: @(_user.Claims.First(x => x.Type == "email")!.Value)</li>
+        <li>First Name: @(_user.Claims.First(x => x.Type == "firstName")!.Value)</li>
+        <li>Last Name: @(_user.Claims.First(x => x.Type == "lastName")!.Value)</li>
         <li>Last Name: @(_user.Claims.First(x => x.Type == ClaimTypes.Role)!.Value)</li>
 
         <li>Admins role: @(_user.IsInRole(ApplicationConstants.Roles.Admins) ? ApplicationConstants.Roles.Admins :"")</li>

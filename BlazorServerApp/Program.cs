@@ -12,16 +12,19 @@ builder.Services.AddServerSideBlazor();
 //added
 builder.Services.AddScoped<AuthenticationStateProvider, AuthStateProvider>();
 
+ApplicationConstants.ProductApiUrl = builder.Configuration["ServiceUrls:ProductApiUrl"];
 ApplicationConstants.CouponApiUrl = builder.Configuration["ServiceUrls:CouponApiUrl"];
 ApplicationConstants.AuthApiUrl = builder.Configuration["ServiceUrls:AuthApiUrl"];
 
 builder.Services.AddHttpContextAccessor();
 builder.Services.AddHttpClient();
 
+builder.Services.AddHttpClient<IProductService, ProductService>();
 builder.Services.AddHttpClient<ICouponService, CouponService>();
 builder.Services.AddHttpClient<IAuthService, AuthService>();
 
 builder.Services.AddScoped<IBaseService, BaseService>();
+builder.Services.AddScoped<IProductService, ProductService>();
 builder.Services.AddScoped<ICouponService, CouponService>();
 builder.Services.AddScoped<IAuthService, AuthService>();
 builder.Services.AddScoped<ITokenProviderService, TokenProviderService>();
