@@ -7,7 +7,8 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Compile Remove="Services\TokenProviderService2.cs" />
+    <Compile Remove="Services\TokenCookieProviderService.cs" />
+    <Compile Remove="Services\TokenLocalStorageProviderService.cs" />
   </ItemGroup>
 
   <ItemGroup>

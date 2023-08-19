@@ -2,20 +2,21 @@
 
 namespace BlazorServerApp.Services
 {
-    public class TokenProviderService2 : ITokenProviderService
+    public class TokenCookieProviderService : ITokenProviderService
     {
         private readonly IHttpContextAccessor _httpContextAccessor;
 
-        public TokenProviderService2(IHttpContextAccessor httpContextAccessor)
+        public TokenCookieProviderService(IHttpContextAccessor httpContextAccessor)
         {
             _httpContextAccessor = httpContextAccessor;
         }
-        public void ClearToken()
+
+        public async Task ClearToken()
         {
             _httpContextAccessor.HttpContext?.Response.Cookies.Delete(ApplicationConstants.AuthCookieName);
         }
 
-        public string? GetToken()
+        public async Task<string?> GetToken()
         {
             string? token = null;
             var hasToken = _httpContextAccessor.HttpContext?.Request.Cookies.TryGetValue(
@@ -23,7 +24,7 @@ namespace BlazorServerApp.Services
             return hasToken is true ? token : null;
         }
 
-        public void SetToken(string token)
+        public async Task SetToken(string token)
         {
             _httpContextAccessor.HttpContext?.Response.Cookies.Append(ApplicationConstants.AuthCookieName, token);
         }

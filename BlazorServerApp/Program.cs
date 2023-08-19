@@ -1,6 +1,7 @@
 using BlazorServerApp.Data;
 using BlazorServerApp.Infrastructure;
 using BlazorServerApp.Services;
+using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Components.Authorization;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -11,14 +12,16 @@ builder.Services.AddServerSideBlazor()
     .AddCircuitOptions(options => { options.DetailedErrors = true; });
 
 //added
+builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
+    .AddCookie();
+
+builder.Services.AddHttpContextAccessor();
 
 ApplicationConstants.ProductApiUrl = builder.Configuration["ServiceUrls:ProductApiUrl"];
 ApplicationConstants.CouponApiUrl = builder.Configuration["ServiceUrls:CouponApiUrl"];
 ApplicationConstants.AuthApiUrl = builder.Configuration["ServiceUrls:AuthApiUrl"];
 
-builder.Services.AddHttpContextAccessor();
 builder.Services.AddHttpClient();
-
 builder.Services.AddHttpClient<IProductService, ProductService>();
 builder.Services.AddHttpClient<ICouponService, CouponService>();
 builder.Services.AddHttpClient<IAuthService, AuthService>();
@@ -28,7 +31,7 @@ builder.Services.AddScoped<IBaseService, BaseService>();
 builder.Services.AddScoped<IProductService, ProductService>();
 builder.Services.AddScoped<ICouponService, CouponService>();
 builder.Services.AddScoped<IAuthService, AuthService>();
-builder.Services.AddScoped<ITokenProviderService, TokenProviderService>();
+//builder.Services.AddScoped<ITokenProviderService, TokenCookieProviderService>();
 builder.Services.AddSingleton<WeatherForecastService>();
 
 var app = builder.Build();
