@@ -1,6 +1,9 @@
 ﻿@page "/coupons"
 @inject ICouponService _couponService
+@inject AuthenticationStateProvider _authStateProvider
+@inject NavigationManager _navigationManager
 @inject IJSRuntime _js
+@* @attribute [Authorize] *@
 
 <PageTitle>@_title</PageTitle>
 
@@ -26,15 +29,14 @@ else
                     <th>Code</th>
                     <th>Discount</th>
                     <th>Min Amount</th>
-                    <AuthorizeView Roles="@(ApplicationConstants.Roles.Admins)">
-                        <Authorized>
-                            <th>
-                                <a class="btn btn-sm btn-primary" href="coupon/create" title="Create">
-                                    <span class="oi oi-plus" aria-hidden="true"></span>
-                                </a>
-                            </th>
-                        </Authorized>
-                    </AuthorizeView>
+                    @if (_isAdmin)
+                    {
+                        <th>
+                            <a class="btn btn-sm btn-primary" href="coupon/create" title="Create">
+                                <span class="oi oi-plus" aria-hidden="true"></span>
+                            </a>
+                        </th>
+                    }
                 </tr>
             </thead>
             <tbody>
@@ -45,22 +47,20 @@ else
                         <td>@item.Code</td>
                         <td>@item.Discount.ToString("c")</td>
                         <td>@item.MinAmount.ToString("c")</td>
-                        <AuthorizeView Roles="@(ApplicationConstants.Roles.Admins)">
-                            <Authorized>
-                                <td>
-                                    <button class="btn btn-sm btn-danger" @onclick="@(async ()=> await delete(item.Id))" title="Delete">
-                                        <span class="oi oi-trash" aria-hidden="true"></span>
-                                    </button>
-                                    <a class="btn btn-sm btn-warning" title="Edit" href="coupon/edit/@item.Id">
-                                        <span class="oi oi-pencil" aria-hidden="true"></span>
-                                    </a>
-                                    <a class="btn btn-sm btn-info" title="Details" href="coupon/details/@item.Id">
-                                        <span class="oi oi-eye" aria-hidden="true"></span>
-                                    </a>
-                                </td>
-                            </Authorized>
-                        </AuthorizeView>
-
+                        @if (_isAdmin)
+                        {
+                            <td>
+                                <button class="btn btn-sm btn-danger" @onclick="@(async ()=> await delete(item.Id))" title="Delete">
+                                    <span class="oi oi-trash" aria-hidden="true"></span>
+                                </button>
+                                <a class="btn btn-sm btn-warning" title="Edit" href="coupon/edit/@item.Id">
+                                    <span class="oi oi-pencil" aria-hidden="true"></span>
+                                </a>
+                                <a class="btn btn-sm btn-info" title="Details" href="coupon/details/@item.Id">
+                                    <span class="oi oi-eye" aria-hidden="true"></span>
+                                </a>
+                            </td>
+                        }
                     </tr>
                 }
             </tbody>
@@ -71,11 +71,22 @@ else
 @code {
     private string _title = "Coupons Index";
     private List<CouponDto>? _items;
+    private bool _isAdmin = false;
     private string? _error = string.Empty;
 
     protected override async Task OnInitializedAsync()
     {
-        await load();
+        var authStateProvider = await _authStateProvider.GetAuthenticationStateAsync();
+        var user = authStateProvider.User;
+        if (user.Identity!.IsAuthenticated)
+        {
+            _isAdmin = user.FindFirst("role")!.Value == "Admins";
+            await load();
+        }
+        else
+        {
+            _navigationManager.NavigateTo("login");
+        }
     }
 
     private async Task load()

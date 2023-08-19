@@ -1,6 +1,8 @@
 ﻿@page "/verifyauth"
 <h3>VerifyAuth</h3>
 
+@* https://learn.microsoft.com/en-us/aspnet/core/blazor/security/?view=aspnetcore-7.0 *@
+
 @if (_user!.Identity!.IsAuthenticated)
 {
     <p class="text-success">User is Autheticated</p>

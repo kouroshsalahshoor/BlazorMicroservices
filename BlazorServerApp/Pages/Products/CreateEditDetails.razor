@@ -1,7 +1,9 @@
 ﻿@page "/product/{pagetype}"
 @page "/product/{pagetype}/{id:int}"
 @inject IProductService _productService
+@inject AuthenticationStateProvider _authStateProvider
 @inject NavigationManager _navigationManager
+@* @attribute [Authorize] *@
 
 <PageTitle>@_title</PageTitle>
 
@@ -59,15 +61,34 @@
             </div>
         </fieldset>
 
+        @if (PageType == "details")
+        {
+            <div class="mb-3 row">
+                <label class="col-sm-2 col-form-label">Count</label>
+                <div class="col-sm-10">
+                    <InputNumber class="form-control" @bind-Value="_model.Count" />
+                    <ValidationMessage For="() => _model.Count" />
+                </div>
+            </div>
+        }
+
         <div class="mb-3 row">
             <div class="col-5 offset-2">
                 <a href="products" class="btn btn-light form-control">Back to List</a>
             </div>
             <div class="col-5">
-                @if (PageType != "details")
-                {
-                    <button type="submit" class="btn btn-primary form-control">Submit</button>
-                }
+                @* @if (PageType != "details")
+                { *@
+                <button type="submit" class="btn btn-primary form-control">
+                    Submit
+                    @if (_isLoading)
+                    {
+                        <div class="spinner-border text-light spinner-border-sm" role="status">
+                            <span class="visually-hidden">Loading...</span>
+                        </div>
+                    }
+                </button>
+                @* } *@
             </div>
         </div>
 
@@ -82,26 +103,40 @@
     private string _title = "";
     private ProductDto _model = new();
     private bool _disabled { get; set; } = false;
+    private bool _isAdmin = false;
     private string? _error = string.Empty;
+    private bool _isLoading = false;
 
     protected override async Task OnParametersSetAsync()
     {
-        PageType = PageType.ToLower();
-        if (PageType == "create")
+        var authStateProvider = await _authStateProvider.GetAuthenticationStateAsync();
+        var user = authStateProvider.User;
+        if (user.Identity!.IsAuthenticated)
         {
-            _title = "Product Create";
+            _isAdmin = user.FindFirst("role")!.Value == "Admins";
+
+            PageType = PageType.ToLower();
+            if (PageType == "create")
+            {
+                _title = "Product Create";
+            }
+            else if (PageType == "edit")
+            {
+                _title = "Product Edit";
+                await load();
+            }
+            else if (PageType == "details")
+            {
+                _disabled = true;
+                _title = "Product Details";
+                await load();
+            }
         }
-        else if (PageType == "edit")
+        else
         {
-            _title = "Product Edit";
-            await load();
+            _navigationManager.NavigateTo("login");
         }
-        else if (PageType == "details")
-        {
-            _disabled = true;
-            _title = "Product Details";
-            await load();
-        }
+
     }
 
     private async Task load()
@@ -115,6 +150,7 @@
 
     private async Task submit()
     {
+        _isLoading = true;
         _error = string.Empty;
         if (PageType == "create")
         {
@@ -128,7 +164,8 @@
                 _error = response is null ? "Create Error" : response.Message;
             }
         }
-        else if (PageType == "edit")
+        else
+        // else if (PageType == "edit")
         {
             var response = await _productService.Update(_model);
             if (response is not null && response.IsSuccessful)

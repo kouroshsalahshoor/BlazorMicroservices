@@ -1,6 +1,9 @@
 ﻿@page "/products"
 @inject IProductService _productService
+@inject AuthenticationStateProvider _authStateProvider
+@inject NavigationManager _navigationManager
 @inject IJSRuntime _js
+@* @attribute [Authorize] *@
 
 <PageTitle>@_title</PageTitle>
 
@@ -28,15 +31,12 @@ else
                     <th>Description</th>
                     <th>CategoryName</th>
                     <th>Image</th>
-                    @* <AuthorizeView Roles="@(ApplicationConstants.Roles.Admins)">
-                <Authorized> *@
+                    <th>Count</th>
                     <th>
                         <a class="btn btn-sm btn-primary" href="product/create" title="Create">
                             <span class="oi oi-plus" aria-hidden="true"></span>
                         </a>
                     </th>
-                    @* </Authorized>
-                </AuthorizeView> *@
                 </tr>
             </thead>
             <tbody>
@@ -46,11 +46,10 @@ else
                         <td>@item.Id</td>
                         <td>@item.Name</td>
                         <td>@item.Price.ToString("c")</td>
-                        <td>@item.Description</td>
+                        <td>@((MarkupString)item.Description)</td>
                         <td>@item.CategoryName</td>
                         <td>@item.ImageUrl</td>
-                        @* <AuthorizeView Roles="@(ApplicationConstants.Roles.Admins)">
-                <Authorized> *@
+                        <td>@item.Count</td>
                         <td>
                             <button class="btn btn-sm btn-danger" @onclick="@(async ()=> await delete(item.Id))" title="Delete">
                                 <span class="oi oi-trash" aria-hidden="true"></span>
@@ -62,9 +61,6 @@ else
                                 <span class="oi oi-eye" aria-hidden="true"></span>
                             </a>
                         </td>
-                        @* </Authorized>
-                </AuthorizeView> *@
-
                     </tr>
                 }
             </tbody>
@@ -75,11 +71,22 @@ else
 @code {
     private string _title = "Products Index";
     private List<ProductDto>? _items;
+    private bool _isAdmin = false;
     private string? _error = string.Empty;
 
     protected override async Task OnInitializedAsync()
     {
-        await load();
+        var authStateProvider = await _authStateProvider.GetAuthenticationStateAsync();
+        var user = authStateProvider.User;
+        if (user.Identity!.IsAuthenticated)
+        {
+            _isAdmin = user.FindFirst("role")!.Value == "Admins";
+            await load();
+        }
+        else
+        {
+            _navigationManager.NavigateTo("login");
+        }
     }
 
     private async Task load()

@@ -1,6 +1,5 @@
 ﻿@page "/login"
 @inject IAuthService _authService
-@inject IHttpContextAccessor _httpContextAccessor
 @inject ProtectedLocalStorage _protectedLocalStorage
 @inject AuthenticationStateProvider _authStateProvider
 @inject NavigationManager _navigationManager
@@ -33,7 +32,9 @@
                 Submit
                 @if (_isLoading)
                 {
-                    <text> loading...</text>
+                    <div class="spinner-border text-light spinner-border-sm" role="status">
+                        <span class="visually-hidden">Loading...</span>
+                    </div>
                 }
             </button>
         </EditForm>

@@ -1,7 +1,9 @@
 ﻿@page "/coupon/{pagetype}"
 @page "/coupon/{pagetype}/{id:int}"
 @inject ICouponService _couponService
+@inject AuthenticationStateProvider _authStateProvider
 @inject NavigationManager _navigationManager
+@* @attribute [Authorize] *@
 
 <PageTitle>@_title</PageTitle>
 
@@ -50,7 +52,15 @@
             <div class="col-5">
                 @if (PageType != "details")
                 {
-                    <button type="submit" class="btn btn-primary form-control">Submit</button>
+                    <button type="submit" class="btn btn-primary form-control">
+                        Submit
+                        @if (_isLoading)
+                        {
+                            <div class="spinner-border text-light spinner-border-sm" role="status">
+                                <span class="visually-hidden">Loading...</span>
+                            </div>
+                        }
+                    </button>
                 }
             </div>
         </div>
@@ -66,26 +76,39 @@
     private string _title = "";
     private CouponDto _model = new();
     private bool _disabled { get; set; } = false;
+    private bool _isAdmin = false;
     private string? _error = string.Empty;
+    private bool _isLoading = false;
 
     protected override async Task OnParametersSetAsync()
     {
-        PageType = PageType.ToLower();
-        if (PageType == "create")
+        var authStateProvider = await _authStateProvider.GetAuthenticationStateAsync();
+        var user = authStateProvider.User;
+        if (user.Identity!.IsAuthenticated)
         {
-            _title = "Coupon Create";
+            _isAdmin = user.FindFirst("role")!.Value == "Admins";
+            PageType = PageType.ToLower();
+            if (PageType == "create")
+            {
+                _title = "Coupon Create";
+            }
+            else if (PageType == "edit")
+            {
+                _title = "Coupon Edit";
+                await load();
+            }
+            else if (PageType == "details")
+            {
+                _disabled = true;
+                _title = "Coupon Details";
+                await load();
+            }
         }
-        else if (PageType == "edit")
+        else
         {
-            _title = "Coupon Edit";
-            await load();
+            _navigationManager.NavigateTo("login");
         }
-        else if (PageType == "details")
-        {
-            _disabled = true;
-            _title = "Coupon Details";
-            await load();
-        }
+
     }
 
     private async Task load()
@@ -99,6 +122,7 @@
 
     private async Task submit()
     {
+        _isLoading = true;
         _error = string.Empty;
         if (PageType == "create")
         {
