@@ -29,14 +29,14 @@ else
                     <th>CategoryName</th>
                     <th>Image</th>
                     @* <AuthorizeView Roles="@(ApplicationConstants.Roles.Admins)">
-                        <Authorized> *@
-                            <th>
-                                <a class="btn btn-sm btn-primary" href="product/create" title="Create">
-                                    <span class="oi oi-plus" aria-hidden="true"></span>
-                                </a>
-                            </th>
-                        @* </Authorized>
-                    </AuthorizeView> *@
+                <Authorized> *@
+                    <th>
+                        <a class="btn btn-sm btn-primary" href="product/create" title="Create">
+                            <span class="oi oi-plus" aria-hidden="true"></span>
+                        </a>
+                    </th>
+                    @* </Authorized>
+                </AuthorizeView> *@
                 </tr>
             </thead>
             <tbody>
@@ -50,20 +50,20 @@ else
                         <td>@item.CategoryName</td>
                         <td>@item.ImageUrl</td>
                         @* <AuthorizeView Roles="@(ApplicationConstants.Roles.Admins)">
-                            <Authorized> *@
-                                <td>
-                                    <button class="btn btn-sm btn-danger" @onclick="@(async ()=> await delete(item.Id))" title="Delete">
-                                        <span class="oi oi-trash" aria-hidden="true"></span>
-                                    </button>
-                                    <a class="btn btn-sm btn-warning" title="Edit" href="product/edit/@item.Id">
-                                        <span class="oi oi-pencil" aria-hidden="true"></span>
-                                    </a>
-                                    <a class="btn btn-sm btn-info" title="Details" href="product/details/@item.Id">
-                                        <span class="oi oi-eye" aria-hidden="true"></span>
-                                    </a>
-                                </td>
-                            @* </Authorized>
-                        </AuthorizeView> *@
+                <Authorized> *@
+                        <td>
+                            <button class="btn btn-sm btn-danger" @onclick="@(async ()=> await delete(item.Id))" title="Delete">
+                                <span class="oi oi-trash" aria-hidden="true"></span>
+                            </button>
+                            <a class="btn btn-sm btn-warning" title="Edit" href="product/edit/@item.Id">
+                                <span class="oi oi-pencil" aria-hidden="true"></span>
+                            </a>
+                            <a class="btn btn-sm btn-info" title="Details" href="product/details/@item.Id">
+                                <span class="oi oi-eye" aria-hidden="true"></span>
+                            </a>
+                        </td>
+                        @* </Authorized>
+                </AuthorizeView> *@
 
                     </tr>
                 }

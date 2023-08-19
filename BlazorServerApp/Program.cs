@@ -7,10 +7,10 @@ var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddRazorPages();
-builder.Services.AddServerSideBlazor();
+builder.Services.AddServerSideBlazor()
+    .AddCircuitOptions(options => { options.DetailedErrors = true; });
 
 //added
-builder.Services.AddScoped<AuthenticationStateProvider, AuthStateProvider>();
 
 ApplicationConstants.ProductApiUrl = builder.Configuration["ServiceUrls:ProductApiUrl"];
 ApplicationConstants.CouponApiUrl = builder.Configuration["ServiceUrls:CouponApiUrl"];
@@ -23,6 +23,7 @@ builder.Services.AddHttpClient<IProductService, ProductService>();
 builder.Services.AddHttpClient<ICouponService, CouponService>();
 builder.Services.AddHttpClient<IAuthService, AuthService>();
 
+builder.Services.AddScoped<AuthenticationStateProvider, AuthStateProvider>();
 builder.Services.AddScoped<IBaseService, BaseService>();
 builder.Services.AddScoped<IProductService, ProductService>();
 builder.Services.AddScoped<ICouponService, CouponService>();

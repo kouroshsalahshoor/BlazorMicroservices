@@ -23,6 +23,5 @@
         // var authstate = await _authState.GetAuthenticationStateAsync();
         var user = authstate!.User;
         _userName = user!.FindFirst("name")!.Value;
-        // _userName = user!.FindFirst(ClaimTypes.Name)!.Value;
     }
 }
