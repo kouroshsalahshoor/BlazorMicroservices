@@ -15,7 +15,7 @@ builder.Services.AddServerSideBlazor()
 builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
     .AddCookie();
 
-builder.Services.AddHttpContextAccessor();
+//builder.Services.AddHttpContextAccessor();
 
 ApplicationConstants.ProductApiUrl = builder.Configuration["ServiceUrls:ProductApiUrl"];
 ApplicationConstants.CouponApiUrl = builder.Configuration["ServiceUrls:CouponApiUrl"];
@@ -26,6 +26,7 @@ builder.Services.AddHttpClient<IProductService, ProductService>();
 builder.Services.AddHttpClient<ICouponService, CouponService>();
 builder.Services.AddHttpClient<IAuthService, AuthService>();
 
+builder.Services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
 builder.Services.AddScoped<AuthenticationStateProvider, AuthStateProvider>();
 builder.Services.AddScoped<IBaseService, BaseService>();
 builder.Services.AddScoped<IProductService, ProductService>();

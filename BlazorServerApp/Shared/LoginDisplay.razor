@@ -22,6 +22,9 @@
         var authstate = await _authState;
         // var authstate = await _authState.GetAuthenticationStateAsync();
         var user = authstate!.User;
-        _userName = user!.FindFirst("name")!.Value;
+        if (user.Identity.IsAuthenticated)
+        {
+            _userName = user!.FindFirst("name")!.Value;
+        }
     }
 }

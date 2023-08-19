@@ -16,8 +16,8 @@
         <li>Id: @_claims.FirstOrDefault(x=> x.Type == ClaimTypes.Sid)!.Value</li>
         <li>UserName: @_claims.FirstOrDefault(x => x.Type == "name")!.Value</li>
         <li>Email: @_claims.FirstOrDefault(x => x.Type == "email")!.Value</li>
-        <li>First Name: @_claims.FirstOrDefault(x => x.Type == "firstName")!.Value</li>
-        <li>Last Name: @_claims.FirstOrDefault(x => x.Type == "lastName")!.Value</li>
+        <li>First Name: @_claims.FirstOrDefault(x => x.Type == "given_name")!.Value</li>
+        <li>Last Name: @_claims.FirstOrDefault(x => x.Type == "family_name")!.Value</li>
         <li>Role: @_claims.FirstOrDefault(x => x.Type == "role")!.Value</li>
     </ul>
 

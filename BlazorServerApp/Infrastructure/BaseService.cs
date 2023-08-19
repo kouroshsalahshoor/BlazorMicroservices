@@ -1,4 +1,5 @@
 ﻿using BlazorServerApp.Services;
+using Microsoft.AspNetCore.Components.Server.ProtectedBrowserStorage;
 using Newtonsoft.Json;
 using System.Net;
 using System.Net.Http.Headers;
@@ -10,12 +11,12 @@ namespace BlazorServerApp.Infrastructure
     public class BaseService : IBaseService
     {
         private readonly IHttpClientFactory _httpClientFactory;
-        private readonly ITokenProviderService _tokenProviderService;
+        private readonly ProtectedLocalStorage _protectedLocalStore;
 
-        public BaseService(IHttpClientFactory httpClientFactory, ITokenProviderService tokenProviderService)
+        public BaseService(IHttpClientFactory httpClientFactory, ProtectedLocalStorage protectedLocalStore)
         {
             _httpClientFactory = httpClientFactory;
-            _tokenProviderService = tokenProviderService;
+            _protectedLocalStore = protectedLocalStore;
         }
 
         public async Task<ResponseDto?> SendAsync(RequestDto requestDto, bool withBearer = true)
@@ -28,7 +29,8 @@ namespace BlazorServerApp.Infrastructure
 
                 if (withBearer)
                 {
-                    var token = await _tokenProviderService.GetToken();
+                    var result = await _protectedLocalStore.GetAsync<string>(ApplicationConstants.AuthTokenName);
+                    var token = result.Success ? result.Value : string.Empty;
                     message.Headers.Add("Authorization", $"Bearer {token}");
                     //client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("bearer", requestDto.Token);
                 }

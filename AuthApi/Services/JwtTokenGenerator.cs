@@ -23,8 +23,8 @@ namespace AuthApi.Services
                 new Claim(ClaimTypes.Sid, user.Id),
                 new Claim(ClaimTypes.Name, user.UserName),
                 new Claim(ClaimTypes.Email, user.Email),
-                new Claim("firstName", user.FirstName),
-                new Claim("lastName", user.LastName),
+                new Claim(ClaimTypes.GivenName, user.FirstName),
+                new Claim(ClaimTypes.Surname, user.LastName),
             };
 
             claims.AddRange(roles.Select(x => new Claim(ClaimTypes.Role, x)));

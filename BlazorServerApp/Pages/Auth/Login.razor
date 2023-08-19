@@ -1,7 +1,7 @@
 ﻿@page "/login"
 @inject IAuthService _authService
+@inject IHttpContextAccessor _httpContextAccessor
 @inject ProtectedLocalStorage _protectedLocalStorage
-@* @inject ITokenProviderService _tokenProviderService *@
 @inject AuthenticationStateProvider _authStateProvider
 @inject NavigationManager _navigationManager
 
@@ -58,7 +58,6 @@
             var loginResponse = JsonConvert.DeserializeObject<LoginResponseDto>(Convert.ToString(response.Result));
 
             await _protectedLocalStorage.SetAsync(ApplicationConstants.AuthTokenName, loginResponse.Token);
-            // _tokenProviderService.SetToken(loginResponse.Token);
 
             ((AuthStateProvider)_authStateProvider).NotifyUserAuthentication(loginResponse.Token);
 
