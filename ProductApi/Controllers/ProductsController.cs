@@ -4,12 +4,13 @@ using ProductApi.Infrastructure;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 
 namespace ProductApi.Controllers
 {
     [Route("api/products")]
     [ApiController]
-    [Authorize]
+    //[Authorize]
     public class ProductsController : ControllerBase
     {
         private ApplicationDbContext _db { get; set; }
@@ -26,11 +27,11 @@ namespace ProductApi.Controllers
         }
 
         [HttpGet]
-        public ResponseDto Get()
+        public async Task<ResponseDto> Get()
         {
             try
             {
-                var result = _db.Products.ToList();
+                var result = await _db.Products.ToListAsync();
                 _response.Result = _mapper.Map<List<ProductDto>>(result);
             }
             catch (Exception e)
@@ -41,11 +42,11 @@ namespace ProductApi.Controllers
             return _response;
         }
         [HttpGet("{id:int}")]
-        public ResponseDto Get(int id)
+        public async Task<ResponseDto> Get(int id)
         {
             try
             {
-                var result = _db.Products.First(x => x.Id == id);
+                var result = await _db.Products.FirstAsync(x => x.Id == id);
                 _response.Result = _mapper.Map<ProductDto>(result);
             }
             catch (Exception e)
@@ -58,13 +59,13 @@ namespace ProductApi.Controllers
 
         [HttpPost]
         [Authorize(Roles = "Admins")]
-        public ResponseDto Post([FromBody] ProductDto dto)
+        public async Task<ResponseDto> Post([FromBody] ProductDto dto)
         {
             try
             {
                 var model = _mapper.Map<Product>(dto);
-                _db.Products.Add(model);
-                _db.SaveChanges();
+                await _db.Products.AddAsync(model);
+                await _db.SaveChangesAsync();
 
                 _response.Result = _mapper.Map<ProductDto>(model);
             }
@@ -78,13 +79,13 @@ namespace ProductApi.Controllers
 
         [HttpPut]
         [Authorize(Roles = "Admins")]
-        public ResponseDto Put([FromBody] ProductDto dto)
+        public async Task<ResponseDto> Put([FromBody] ProductDto dto)
         {
             try
             {
                 var model = _mapper.Map<Product>(dto);
                 _db.Products.Update(model);
-                _db.SaveChanges();
+                await _db.SaveChangesAsync();
 
                 _response.Result = _mapper.Map<ProductDto>(model);
             }
@@ -98,13 +99,13 @@ namespace ProductApi.Controllers
 
         [HttpDelete("{id:int}")]
         [Authorize(Roles = "Admins")]
-        public ResponseDto Delete(int id)
+        public async Task<ResponseDto> Delete(int id)
         {
             try
             {
-                var model = _db.Products.First(x => x.Id == id);
+                var model = await _db.Products.FirstAsync(x => x.Id == id);
                 _db.Products.Remove(model);
-                _db.SaveChanges();
+                await _db.SaveChangesAsync();
             }
             catch (Exception e)
             {
