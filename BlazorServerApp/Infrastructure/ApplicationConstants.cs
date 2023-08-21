@@ -7,6 +7,7 @@
         public static string ProductApiUrl { get; set; }
         public static string CouponApiUrl { get; set; }
         public static string AuthApiUrl { get; set; }
+        public static string CartApiUrl { get; set; }
 
         public class Roles
         {

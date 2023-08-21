@@ -3,6 +3,7 @@ using BlazorServerApp.Infrastructure;
 using BlazorServerApp.Services;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Components.Authorization;
+using System.Data.Common;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -20,17 +21,20 @@ builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationSc
 ApplicationConstants.ProductApiUrl = builder.Configuration["ServiceUrls:ProductApiUrl"];
 ApplicationConstants.CouponApiUrl = builder.Configuration["ServiceUrls:CouponApiUrl"];
 ApplicationConstants.AuthApiUrl = builder.Configuration["ServiceUrls:AuthApiUrl"];
+ApplicationConstants.CartApiUrl = builder.Configuration["ServiceUrls:CartApiUrl"];
 
 builder.Services.AddHttpClient();
 builder.Services.AddHttpClient<IProductService, ProductService>();
 builder.Services.AddHttpClient<ICouponService, CouponService>();
 builder.Services.AddHttpClient<IAuthService, AuthService>();
+builder.Services.AddHttpClient<ICartService, CartService>();
 
 builder.Services.AddScoped<AuthenticationStateProvider, AuthStateProvider>();
 builder.Services.AddScoped<IBaseService, BaseService>();
 builder.Services.AddScoped<IProductService, ProductService>();
 builder.Services.AddScoped<ICouponService, CouponService>();
 builder.Services.AddScoped<IAuthService, AuthService>();
+builder.Services.AddScoped<ICartService, CartService>();
 //builder.Services.AddScoped<ITokenProviderService, TokenCookieProviderService>();
 builder.Services.AddSingleton<WeatherForecastService>();
 

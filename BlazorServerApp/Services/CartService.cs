@@ -1,0 +1,65 @@
+﻿using BlazorServerApp.Data;
+using BlazorServerApp.Infrastructure;
+using static BlazorServerApp.Infrastructure.ApplicationConstants;
+
+namespace BlazorServerApp.Services
+{
+    public class CartService : ICartService
+    {
+        private readonly IBaseService _baseService;
+
+        public CartService(IBaseService baseService)
+        {
+            _baseService = baseService;
+        }
+
+        public async Task<ResponseDto?> ApplyCoupon(CartDto cartDto)
+        {
+            return await _baseService.SendAsync(new RequestDto
+            {
+                ApiType = ApiTypes.POST,
+                Url = ApplicationConstants.CartApiUrl + "ApplyCoupon",
+                Data = cartDto
+            });
+        }
+
+        public async Task<ResponseDto?> CreateEdit(CartDto cartDto)
+        {
+            return await _baseService.SendAsync(new RequestDto
+            {
+                ApiType = ApiTypes.POST,
+                Url = ApplicationConstants.CartApiUrl,
+                Data = cartDto
+            });
+        }
+
+        public async Task<ResponseDto?> GetCartByUserId(string userId)
+        {
+            return await _baseService.SendAsync(new RequestDto
+            {
+                ApiType = ApiTypes.GET,
+                Url = ApplicationConstants.CartApiUrl + $"GetCart/{userId}",
+            });
+        }
+
+        public async Task<ResponseDto?> Remove(int cartDetailId)
+        {
+            return await _baseService.SendAsync(new RequestDto
+            {
+                ApiType = ApiTypes.POST,
+                Url = ApplicationConstants.CartApiUrl,
+                Data = cartDetailId
+            });
+        }
+
+        public async Task<ResponseDto?> RemoveCoupon(CartDto cartDto)
+        {
+            return await _baseService.SendAsync(new RequestDto
+            {
+                ApiType = ApiTypes.POST,
+                Url = ApplicationConstants.CartApiUrl + "RemoveCoupon",
+                Data = cartDto
+            });
+        }
+    }
+}
