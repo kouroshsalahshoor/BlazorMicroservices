@@ -27,6 +27,22 @@ else
         <p>Total: @_model.Total.ToString("c")</p>
     </div>
 
+    <div class="row">
+        <div class="col-md-3">
+            <input class="form-control" @bind="_model.CouponCode" />
+        </div>
+        <div class="col-md-3">
+            <button class="btn btn-sm btn-primary" title="Apply Coupon" @onclick="@(async ()=> await applyCoupon(_model))">
+                Apply Coupon
+            </button>
+        </div>
+        <div class="col-md-3">
+            <button class="btn btn-sm btn-danger" title="Remove Coupon" @onclick="@(async ()=> await removeCoupon(_model))">
+                Remove Coupon
+            </button>
+        </div>
+    </div>
+
     <hr />
 
     <div class="table-responsive">
@@ -42,6 +58,7 @@ else
                     <th>Product Count</th>
                     <th>Product Price</th>
                     <th>Cart Count</th>
+                    <th></th>
                 </tr>
             </thead>
             <tbody>
@@ -56,6 +73,11 @@ else
                         <td>@item.Product.Count</td>
                         <td>@item.Product.Price.ToString("c")</td>
                         <td>@item.Count</td>
+                        <td>
+                            <button class="btn btn-sm btn-danger" title="Remove" @onclick="@(async ()=> await remove(item.Id))">
+                                <span class="oi oi-trash" aria-hidden="true"></span>
+                            </button>
+                        </td>
                     </tr>
                 }
             </tbody>
@@ -97,8 +119,55 @@ else
         }
         else
         {
-            _model = new();
-            // _error = response is null ? "Error loading data" : response.Message;
+            _error = response is null ? "Error loading data" : response.Message;
+        }
+    }
+
+    private async Task remove(int cartDetailId)
+    {
+        _error = string.Empty;
+        if (await _js.InvokeAsync<bool>("confirm", "Are you sure deleting this item?"))
+        {
+            var response = await _cartService.Remove(cartDetailId);
+            if (response is not null && response.IsSuccessful)
+            {
+                await load();
+            }
+            else
+            {
+                _error = response is null ? "Error removing Cart Detail" : response.Message;
+            }
+        }
+    }
+
+    private async Task applyCoupon(CartDto cartDto)
+    {
+        _error = string.Empty;
+        var response = await _cartService.ApplyCoupon(cartDto);
+        if (response is not null && response.IsSuccessful)
+        {
+            await load();
+        }
+        else
+        {
+            _error = response is null ? "Error Applying Coupon" : response.Message;
+        }
+    }
+
+    private async Task removeCoupon(CartDto cartDto)
+    {
+        _error = string.Empty;
+        if (await _js.InvokeAsync<bool>("confirm", "Are you sure deleting this item?"))
+        {
+            var response = await _cartService.RemoveCoupon(cartDto);
+            if (response is not null && response.IsSuccessful)
+            {
+                await load();
+            }
+            else
+            {
+                _error = response is null ? "Error Removing Coupon" : response.Message;
+            }
         }
     }
 

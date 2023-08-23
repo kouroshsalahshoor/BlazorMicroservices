@@ -13,9 +13,9 @@ namespace CartApi.Services
             _httpClientFactory = httpClientFactory;
         }
 
-        public async Task<CouponDto> Get(string code)
+        public async Task<CouponDto> GetByCode(string code)
         {
-            var client = _httpClientFactory.CreateClient("Coupon");
+            var client = _httpClientFactory.CreateClient("Coupons");
             var response = await client.GetAsync($"GetByCode/{code}");
             var apiContent = await response.Content.ReadAsStringAsync();
             var resp = JsonConvert.DeserializeObject<ResponseDto>(apiContent);

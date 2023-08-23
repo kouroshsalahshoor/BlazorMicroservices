@@ -47,7 +47,7 @@ namespace BlazorServerApp.Services
             return await _baseService.SendAsync(new RequestDto
             {
                 ApiType = ApiTypes.POST,
-                Url = ApplicationConstants.CartApiUrl,
+                Url = ApplicationConstants.CartApiUrl + $"Remove",
                 Data = cartDetailId
             });
         }

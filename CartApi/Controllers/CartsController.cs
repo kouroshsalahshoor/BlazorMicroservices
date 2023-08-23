@@ -54,7 +54,7 @@ namespace CartApi.Controllers
 
                 if (string.IsNullOrEmpty(cartDto.CouponCode) == false)
                 {
-                    var coupon = await _couponService.Get(cartDto.CouponCode);
+                    var coupon = await _couponService.GetByCode(cartDto.CouponCode);
                     if (coupon is not null && cartDto.Total > coupon.MinAmount)
                     {
                         cartDto.Total -= coupon.Discount;
