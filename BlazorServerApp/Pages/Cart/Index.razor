@@ -1,0 +1,105 @@
+﻿@page "/cart"
+@inject ICartService _cartService
+@inject AuthenticationStateProvider _authStateProvider
+@inject NavigationManager _navigationManager
+@inject IJSRuntime _js
+@* @attribute [Authorize] *@
+
+<PageTitle>@_title</PageTitle>
+
+<h3>@_title</h3>
+
+@if (string.IsNullOrEmpty(_error) == false)
+{
+    <p class="text-danger">@_error</p>
+}
+
+@if (_model == null)
+{
+    <p><em>Loading...</em></p>
+}
+else
+{
+    <div>
+        <p>UserId: @_model.UserId</p>
+        <p>CouponCode: @_model.CouponCode</p>
+        <p>Discount: @_model.Discount.ToString("c")</p>
+        <p>Total: @_model.Total.ToString("c")</p>
+    </div>
+
+    <hr />
+
+    <div class="table-responsive">
+        <table class="table table-hover table-sm">
+            <caption>List of products in Cart</caption>
+            <thead>
+                <tr>
+                    <th>Id</th>
+                    <th>ProductId</th>
+                    <th>Product Name</th>
+                    <th>Category Name</th>
+                    <th>Product Image</th>
+                    <th>Product Count</th>
+                    <th>Product Price</th>
+                    <th>Cart Count</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in _model.CartDetailDtos)
+                {
+                    <tr>
+                        <td>@item.Id</td>
+                        <td>@item.ProductId</td>
+                        <td>@item.Product.Name</td>
+                        <td>@item.Product.CategoryName</td>
+                        <td>@item.Product.ImageUrl</td>
+                        <td>@item.Product.Count</td>
+                        <td>@item.Product.Price.ToString("c")</td>
+                        <td>@item.Count</td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+}
+
+@code {
+    private string _title = "Cart Index";
+    private CartDto? _model = new();
+    private bool _isAdmin = false;
+    private string? _error = string.Empty;
+    private ClaimsPrincipal? _user;
+    private string _userId = string.Empty;
+
+    protected override async Task OnInitializedAsync()
+    {
+        var authStateProvider = await _authStateProvider.GetAuthenticationStateAsync();
+        _user = authStateProvider.User;
+        if (_user.Identity!.IsAuthenticated)
+        {
+            _isAdmin = _user.FindFirst("role")!.Value == "Admins";
+            _userId = _user.Claims.FirstOrDefault(x => x.Type == ClaimTypes.Sid).Value;
+            await load();
+        }
+        else
+        {
+            _navigationManager.NavigateTo("login");
+        }
+    }
+
+    private async Task load()
+    {
+        _error = string.Empty;
+        var response = await _cartService.GetCartByUserId(_userId);
+        if (response is not null && response.IsSuccessful)
+        {
+            _model = JsonConvert.DeserializeObject<CartDto>(Convert.ToString(response.Result));
+        }
+        else
+        {
+            _model = new();
+            // _error = response is null ? "Error loading data" : response.Message;
+        }
+    }
+
+}

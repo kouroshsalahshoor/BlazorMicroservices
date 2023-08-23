@@ -3,12 +3,13 @@ using BlazorServerApp.Infrastructure;
 
 namespace BlazorServerApp.Services
 {
-    public interface ICartService
+    public interface ICouponService
     {
-        Task<ResponseDto?> GetCartByUserId(string userId);
-        Task<ResponseDto?> CreateEdit(CartDto cartDto);
-        Task<ResponseDto?> Remove(int cartDetailId);
-        Task<ResponseDto?> ApplyCoupon(CartDto cartDto);
-        Task<ResponseDto?> RemoveCoupon(CartDto cartDto);
+        Task<ResponseDto?> GetAll();
+        Task<ResponseDto?> GetById(int id);
+        Task<ResponseDto?> GetByCode(string couponCode);
+        Task<ResponseDto?> Create(CouponDto dto);
+        Task<ResponseDto?> Update(CouponDto dto);
+        Task<ResponseDto?> Delete(int id);
     }
 }

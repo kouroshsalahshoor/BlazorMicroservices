@@ -28,7 +28,7 @@ namespace BlazorServerApp.Services
             return await _baseService.SendAsync(new RequestDto
             {
                 ApiType = ApiTypes.POST,
-                Url = ApplicationConstants.CartApiUrl,
+                Url = ApplicationConstants.CartApiUrl + "CreateEdit",
                 Data = cartDto
             });
         }

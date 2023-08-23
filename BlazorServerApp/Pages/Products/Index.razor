@@ -1,5 +1,6 @@
 ﻿@page "/products"
 @inject IProductService _productService
+@inject ICartService _cartService
 @inject AuthenticationStateProvider _authStateProvider
 @inject NavigationManager _navigationManager
 @inject IJSRuntime _js
@@ -37,6 +38,7 @@ else
                             <span class="oi oi-plus" aria-hidden="true"></span>
                         </a>
                     </th>
+                    <th>Cart</th>
                 </tr>
             </thead>
             <tbody>
@@ -61,6 +63,16 @@ else
                                 <span class="oi oi-eye" aria-hidden="true"></span>
                             </a>
                         </td>
+                        <td>
+                            <button class="btn btn-sm btn-success" title="Add to Cart"
+                            @onclick="@(async() => await addToCart(item.Id))">
+                                <span class="oi oi-cart" aria-hidden="true"></span>
+                            </button>
+                            <button class="btn btn-sm btn-danger" title="Remove from Cart"
+                            @onclick="@(async() => await removeFromCart(item.Id))">
+                                <span class="oi oi-cart" aria-hidden="true"></span>
+                            </button>
+                        </td>
                     </tr>
                 }
             </tbody>
@@ -71,16 +83,17 @@ else
 @code {
     private string _title = "Products Index";
     private List<ProductDto>? _items;
+    private ClaimsPrincipal? _user;
     private bool _isAdmin = false;
     private string? _error = string.Empty;
 
     protected override async Task OnInitializedAsync()
     {
         var authStateProvider = await _authStateProvider.GetAuthenticationStateAsync();
-        var user = authStateProvider.User;
-        if (user.Identity!.IsAuthenticated)
+        _user = authStateProvider.User;
+        if (_user.Identity!.IsAuthenticated)
         {
-            _isAdmin = user.FindFirst("role")!.Value == "Admins";
+            _isAdmin = _user.FindFirst("role")!.Value == "Admins";
             await load();
         }
         else
@@ -112,6 +125,60 @@ else
             {
                 await load();
             }
+        }
+    }
+
+    private async Task addToCart(int productId)
+    {
+        _error = string.Empty;
+        var cartDto = new CartDto
+        {
+            UserId = _user!.FindFirst(ClaimTypes.Sid)!.Value,
+            CartDetailDtos = new List<CartDetailDto>
+            {
+                new CartDetailDto
+                {
+                    Count = 1,
+                    ProductId = productId
+                }
+            }
+        };
+
+        var response = await _cartService.CreateEdit(cartDto);
+        if (response is not null && response.IsSuccessful)
+        {
+            await _js.InvokeVoidAsync("alert", "product was successfully added to Cart");
+        }
+        else
+        {
+            _error = response.Message;
+        }
+    }
+
+    private async Task removeFromCart(int productId)
+    {
+        _error = string.Empty;
+        var cartDto = new CartDto
+        {
+            UserId = _user!.FindFirst(ClaimTypes.Sid)!.Value,
+            CartDetailDtos = new List<CartDetailDto>
+            {
+                new CartDetailDto
+                {
+                    Count = -1,
+                    ProductId = productId
+                }
+            }
+        };
+
+        var response = await _cartService.CreateEdit(cartDto);
+        if (response is not null && response.IsSuccessful)
+        {
+            await _js.InvokeVoidAsync("alert", "product was successfully removed from Cart");
+        }
+        else
+        {
+            _error = response.Message;
         }
     }
 }
