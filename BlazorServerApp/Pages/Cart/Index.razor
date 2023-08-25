@@ -18,6 +18,10 @@
 {
     <p><em>Loading...</em></p>
 }
+else if (_model.CartDetailDtos.Any() == false)
+{
+    <p>Please add items to cart</p>
+}
 else
 {
     <div>
@@ -92,7 +96,7 @@ else
 
 @code {
     private string _title = "Cart Index";
-    private CartDto? _model = new();
+    private CartDto? _model = null;
     private bool _isAdmin = false;
     private string? _error = string.Empty;
     private ClaimsPrincipal? _user;
@@ -120,12 +124,19 @@ else
         var response = await _cartService.GetCartByUserId(_userId);
         if (response is not null && response.IsSuccessful)
         {
-            _model = JsonConvert.DeserializeObject<CartDto>(Convert.ToString(response.Result));
+            _model = JsonConvert.DeserializeObject<CartDto>(Convert.ToString(response.Result));            
         }
         else
         {
-            _error = response is null ? "Error loading data" : response.Message;
+            _error = response is null ? "Error loading data" : "";
+            // _error = response is null ? "Error loading data" : "Error loading data: " + response.Message;
         }
+
+        if (_model is null)
+        {
+            _model = new();
+        }
+
     }
 
     private async Task remove(int cartDetailId)
@@ -140,7 +151,7 @@ else
             }
             else
             {
-                _error = response is null ? "Error removing Cart Detail" : response.Message;
+                _error = response is null ? "Error removing Cart Detail" : "Error removing Cart Detail: " + response.Message;
             }
         }
     }
