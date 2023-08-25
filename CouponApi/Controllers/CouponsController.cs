@@ -10,7 +10,7 @@ namespace CouponApi.Controllers
 {
     [Route("api/coupons")]
     [ApiController]
-    //[Authorize]
+    [Authorize]
     public class CouponsController : ControllerBase
     {
         private ApplicationDbContext _db { get; set; }

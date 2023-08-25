@@ -11,7 +11,7 @@ namespace CartApi.Controllers
 {
     [Route("api/carts")]
     [ApiController]
-    //[Authorize]
+    [Authorize]
     public class CartsController : ControllerBase
     {
         private ApplicationDbContext _db { get; set; }
@@ -111,7 +111,7 @@ namespace CartApi.Controllers
         }
 
         [HttpPost("CreateEdit")]
-        //[Authorize(Roles = "Admins")]
+        [Authorize(Roles = "Admins")]
         public async Task<ResponseDto> CreateEdit([FromBody] CartDto cartDto)
         {
             try
@@ -168,7 +168,7 @@ namespace CartApi.Controllers
         }
 
         [HttpPost("Remove")]
-        //[Authorize(Roles = "Admins")]
+        [Authorize(Roles = "Admins")]
         public async Task<ResponseDto> Remove([FromBody] int cartDetailId)
         {
             try
