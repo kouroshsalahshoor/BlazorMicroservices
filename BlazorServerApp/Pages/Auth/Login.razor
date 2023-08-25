@@ -62,7 +62,7 @@
 
             ((AuthStateProvider)_authStateProvider).NotifyUserAuthentication(loginResponse.Token);
 
-            _navigationManager.NavigateTo("/");
+            _navigationManager.NavigateTo("/", forceLoad: true);
         }
         else
         {

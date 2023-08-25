@@ -10,6 +10,6 @@
     {
         await _protectedLocalStorage.DeleteAsync(ApplicationConstants.AuthTokenName);
         ((AuthStateProvider)_authStateProvider).NotifyUserLogout();
-        _navigationManager.NavigateTo("/");
+        _navigationManager.NavigateTo("/", forceLoad: true);
     }
 }
