@@ -73,8 +73,15 @@ builder.Services.AddAuthentication(x =>
 });
 builder.Services.AddAuthorization();
 
-builder.Services.AddHttpClient("Products", x => x.BaseAddress = new Uri(builder.Configuration["ServiceUrls:ProductApi"]));
-builder.Services.AddHttpClient("Coupons", x => x.BaseAddress = new Uri(builder.Configuration["ServiceUrls:CouponApi"]));
+builder.Services.AddHttpContextAccessor();
+builder.Services.AddScoped<BackendApiAuthenticationnHttpClientHandler>();
+
+builder.Services.AddHttpClient("Products",
+    x => x.BaseAddress = new Uri(builder.Configuration["ServiceUrls:ProductApi"]))
+    .AddHttpMessageHandler<BackendApiAuthenticationnHttpClientHandler>();
+builder.Services.AddHttpClient("Coupons",
+    x => x.BaseAddress = new Uri(builder.Configuration["ServiceUrls:CouponApi"]))
+    .AddHttpMessageHandler<BackendApiAuthenticationnHttpClientHandler>();
 
 builder.Services.AddScoped<IProductService, ProductService>();
 builder.Services.AddScoped<ICouponService, CouponService>();

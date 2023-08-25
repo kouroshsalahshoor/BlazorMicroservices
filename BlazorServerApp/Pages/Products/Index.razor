@@ -66,11 +66,11 @@ else
                         <td>
                             <button class="btn btn-sm btn-success" title="Add to Cart"
                             @onclick="@(async() => await addToCart(item.Id))">
-                                <span class="oi oi-cart" aria-hidden="true"></span>
+                                <span class="oi oi-plus" aria-hidden="true"></span>
                             </button>
                             <button class="btn btn-sm btn-danger" title="Remove from Cart"
                             @onclick="@(async() => await removeFromCart(item.Id))">
-                                <span class="oi oi-cart" aria-hidden="true"></span>
+                                <span class="oi oi-minus" aria-hidden="true"></span>
                             </button>
                         </td>
                     </tr>
