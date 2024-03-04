@@ -1,4 +1,5 @@
 ﻿using BlazorMicroservices.Services.CouponApi.Data;
+using BlazorMicroservices.Services.CouponApi.Utilities;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
@@ -9,36 +10,44 @@ namespace BlazorMicroservices.Services.CouponApi.Controllers
     public class CouponApiController : ControllerBase
     {
         private readonly ApplicationDbContext _db;
+        private readonly ResponseDto _response;
 
         public CouponApiController(ApplicationDbContext db)
         {
             _db = db;
+            _response = new ResponseDto();
         }
 
         [HttpGet]
-        public object Get()
+        public ResponseDto Get()
         {
             try
             {
-                return _db.Coupons.ToList();
+                var result = _db.Coupons.ToList();
+                _response.Result = result;
             }
             catch (Exception ex)
             {
+                _response.IsSuccessful = false;
+                _response.Message = ex.Message;
             }
-            return null;
+            return _response;
         }
 
         [HttpGet("{id:int}")]
-        public object Get(int id)
+        public ResponseDto Get(int id)
         {
             try
             {
-                return _db.Coupons.First(x=> x.Id == id);
+                var result = _db.Coupons.First(x => x.Id == id);
+                _response.Result = result;
             }
             catch (Exception ex)
             {
+                _response.IsSuccessful = false;
+                _response.Message = ex.Message;
             }
-            return null;
+            return _response;
         }
     }
 }
