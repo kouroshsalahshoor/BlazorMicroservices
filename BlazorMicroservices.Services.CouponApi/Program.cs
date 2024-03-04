@@ -30,4 +30,13 @@ app.UseAuthorization();
 
 app.MapControllers();
 
+using (var scope = app.Services.CreateScope())
+{
+    var _db = scope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
+    if (_db.Database.GetPendingMigrations().Any())
+    {
+        _db.Database.Migrate();
+    }
+}
+
 app.Run();
