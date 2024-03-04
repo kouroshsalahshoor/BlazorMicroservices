@@ -1,4 +1,6 @@
-﻿using BlazorMicroservices.Services.CouponApi.Data;
+﻿using AutoMapper;
+using BlazorMicroservices.Services.CouponApi.Data;
+using BlazorMicroservices.Services.CouponApi.Models.Dtos;
 using BlazorMicroservices.Services.CouponApi.Utilities;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -10,11 +12,13 @@ namespace BlazorMicroservices.Services.CouponApi.Controllers
     public class CouponApiController : ControllerBase
     {
         private readonly ApplicationDbContext _db;
+        private readonly IMapper _mapper;
         private readonly ResponseDto _response;
 
-        public CouponApiController(ApplicationDbContext db)
+        public CouponApiController(ApplicationDbContext db, IMapper mapper)
         {
             _db = db;
+            _mapper = mapper;
             _response = new ResponseDto();
         }
 
@@ -24,7 +28,7 @@ namespace BlazorMicroservices.Services.CouponApi.Controllers
             try
             {
                 var result = _db.Coupons.ToList();
-                _response.Result = result;
+                _response.Result = _mapper.Map<List<CouponDto>>(result);
             }
             catch (Exception ex)
             {
@@ -40,7 +44,7 @@ namespace BlazorMicroservices.Services.CouponApi.Controllers
             try
             {
                 var result = _db.Coupons.First(x => x.Id == id);
-                _response.Result = result;
+                _response.Result = _mapper.Map<CouponDto>(result);
             }
             catch (Exception ex)
             {
