@@ -11,7 +11,9 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Integeration", "Integeratio
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Services", "Services", "{127B9AD0-3F27-4DE9-8B7C-EEC9A944509B}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BlazorMicroservices.Services.CouponApi", "BlazorMicroservices.Services.CouponApi\BlazorMicroservices.Services.CouponApi.csproj", "{855A0AAD-D574-491D-B71A-BC5149BB5D6F}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BlazorMicroservices.Services.CouponApi", "BlazorMicroservices.Services.CouponApi\BlazorMicroservices.Services.CouponApi.csproj", "{855A0AAD-D574-491D-B71A-BC5149BB5D6F}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BlazorMicroservices.Web", "BlazorMicroservices.Web\BlazorMicroservices.Web.csproj", "{757A8C06-AE7F-4FEE-89F2-C9CED4E8B8A6}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -23,12 +25,17 @@ Global
 		{855A0AAD-D574-491D-B71A-BC5149BB5D6F}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{855A0AAD-D574-491D-B71A-BC5149BB5D6F}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{855A0AAD-D574-491D-B71A-BC5149BB5D6F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{757A8C06-AE7F-4FEE-89F2-C9CED4E8B8A6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{757A8C06-AE7F-4FEE-89F2-C9CED4E8B8A6}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{757A8C06-AE7F-4FEE-89F2-C9CED4E8B8A6}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{757A8C06-AE7F-4FEE-89F2-C9CED4E8B8A6}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
 		{855A0AAD-D574-491D-B71A-BC5149BB5D6F} = {127B9AD0-3F27-4DE9-8B7C-EEC9A944509B}
+		{757A8C06-AE7F-4FEE-89F2-C9CED4E8B8A6} = {43450177-AAE8-4C4B-A445-C22588A61894}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {91EBAB17-41D9-4623-B450-38619E8CF2CE}
