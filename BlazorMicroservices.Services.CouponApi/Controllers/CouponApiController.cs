@@ -3,12 +3,12 @@ using BlazorMicroservices.Services.CouponApi.Data;
 using BlazorMicroservices.Services.CouponApi.Models;
 using BlazorMicroservices.Services.CouponApi.Models.Dtos;
 using BlazorMicroservices.Services.CouponApi.Utilities;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
 namespace BlazorMicroservices.Services.CouponApi.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("api/coupon")]
+    //[Route("api/[controller]")]
     [ApiController]
     public class CouponApiController : ControllerBase
     {

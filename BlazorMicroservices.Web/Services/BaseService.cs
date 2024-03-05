@@ -19,7 +19,7 @@ namespace BlazorMicroservices.Web.Services
         {
             try
             {
-                var client = _httpClientFactory.CreateClient("xxx");
+                var client = _httpClientFactory.CreateClient("BlazorMicroservicesClient");
                 HttpRequestMessage message = new();
                 message.Headers.Add("Accept", "application/json");
 

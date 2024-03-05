@@ -1,0 +1,52 @@
+﻿@page "/coupons"
+
+@inject ICouponService _CouponService
+
+<PageTitle>Coupons</PageTitle>
+
+<h1>Coupons</h1>
+
+<p></p>
+
+@if (_models == null)
+{
+    <p><em>Loading...</em></p>
+}
+else
+{
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Code</th>
+                <th>Discount Amount</th>
+                <th>Min Amount</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var model in _models)
+            {
+                <tr>
+                    <td>@model.Id</td>
+                    <td>@model.Code</td>
+                    <td>@model.DiscountAmount</td>
+                    <td>@model.MinAmount</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+
+@code {
+
+    private List<CouponDto> _models;
+
+    protected override async Task OnInitializedAsync()
+    {
+        var response = await _CouponService.GetAllAsync();
+        if (response is not null && response.IsSuccessful)
+        {
+            _models = JsonConvert.DeserializeObject<List<CouponDto>>(Convert.ToString(response.Result));
+        }
+    }
+}

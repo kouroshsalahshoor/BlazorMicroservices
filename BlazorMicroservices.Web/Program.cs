@@ -1,10 +1,24 @@
 using BlazorMicroservices.Web.Components;
+using BlazorMicroservices.Web.Services;
+using BlazorMicroservices.Web.Services.IServices;
+using BlazorMicroservices.Web.Utilities;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddRazorComponents()
     .AddInteractiveServerComponents();
+
+builder.Services.AddHttpContextAccessor();
+builder.Services.AddHttpClient();
+
+builder.Services.AddHttpClient<ICouponService, CouponService>();
+
+SD.CouponApiBase = builder.Configuration["ServiceUrls:CouponApi"];
+
+builder.Services.AddScoped<IBaseService, BaseService>();
+builder.Services.AddScoped<ICouponService, CouponService>();
+
 
 var app = builder.Build();
 
