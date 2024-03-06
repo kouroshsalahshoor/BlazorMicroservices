@@ -1,6 +1,8 @@
 ﻿@page "/coupons"
+@rendermode InteractiveServer
 
-@inject ICouponService _CouponService
+@inject ICouponService _service
+@inject IJSRuntime _js
 
 <PageTitle>Coupons</PageTitle>
 
@@ -8,29 +10,38 @@
 
 <p></p>
 
-@if (_models == null)
+@if (_items is null)
 {
     <p><em>Loading...</em></p>
 }
 else
 {
-    <table class="table">
+    <table class="table table-sm table-bordered table-striped">
         <thead>
             <tr>
                 <th>Id</th>
                 <th>Code</th>
                 <th>Discount Amount</th>
                 <th>Min Amount</th>
+                <th>
+                    <a class="btn btn-sm btn-primary" href="/coupon/create">Create</a>
+                </th>
             </tr>
         </thead>
         <tbody>
-            @foreach (var model in _models)
+            @foreach (var item in _items ?? Enumerable.Empty<CouponDto>())
             {
                 <tr>
-                    <td>@model.Id</td>
-                    <td>@model.Code</td>
-                    <td>@model.DiscountAmount</td>
-                    <td>@model.MinAmount</td>
+                    <td>@item.Id</td>
+                    <td>@item.Code</td>
+                    <td>@item.DiscountAmount</td>
+                    <td>@item.MinAmount</td>
+                    <td>
+                        @* <a class="btn btn-outline-info" href="/coupon/@(item.Id.ToString())">Details</a> *@
+                        <a class="btn btn-sm btn-info" href="@getDetailsUrl(item.Id)">Details</a>
+                        <a class="btn btn-sm btn-warning" href="@getEditUrl(item.Id)">Edit</a>
+                        <button class="btn btn-sm btn-danger" @onclick="@(async () => await delete(item.Id))">Delete</button>
+                    </td>
                 </tr>
             }
         </tbody>
@@ -39,14 +50,31 @@ else
 
 @code {
 
-    private List<CouponDto> _models;
+    private List<CouponDto>? _items = new();
 
     protected override async Task OnInitializedAsync()
     {
-        var response = await _CouponService.GetAllAsync();
+        await load();
+    }
+
+    private async Task load()
+    {
+        var response = await _service.GetAllAsync();
         if (response is not null && response.IsSuccessful)
         {
-            _models = JsonConvert.DeserializeObject<List<CouponDto>>(Convert.ToString(response.Result));
+            _items = JsonConvert.DeserializeObject<List<CouponDto>>(Convert.ToString(response.Result)!);
         }
     }
+
+    private async Task delete(int id)
+    {
+        if (await _js.InvokeAsync<bool>("confirm", "Are you sure deleting this item?"))
+        {
+            await _service.DeleteAsync(id);
+            await load();
+        }
+    }
+
+    private string getDetailsUrl(int id) => $"/coupon/{id.ToString()}";
+    private string getEditUrl(int id) => $"/coupon/edit/{id.ToString()}";
 }

@@ -1,0 +1,72 @@
+﻿@page "/coupon/{id:int}"
+@rendermode InteractiveServer
+
+<style>
+    .form-control:disabled {
+        background-color: white;
+    }
+</style>
+
+<PageTitle>CreateEdit</PageTitle>
+
+<h4 class="bg-info text-center text-white p-2">Details</h4>
+
+@if (_item == null)
+{
+    <h5 class="bg-info text-white text-center p-2">Loading...</h5>
+}
+else
+{
+    <div class="form-group">
+        <label>ID</label>
+        <input class="form-control" value="@_item.Id" disabled />
+    </div>
+    <div class="form-group">
+        <label>Code</label>
+        <input class="form-control" value="@_item.Code" disabled />
+    </div>
+    <div class="form-group">
+        <label>DiscountAmount</label>
+        <input class="form-control" value="@_item.DiscountAmount" disabled />
+    </div>
+    <div class="form-group">
+        <label>MinAmount</label>
+        <input class="form-control" value="@_item.MinAmount" disabled />
+    </div>
+}
+
+<div class="text-center p-2">
+    <NavLink class="btn btn-warning" href="@($"/forms/edit/{Id}")">Edit</NavLink>
+    <NavLink class="btn btn-light" href="/coupons">Back</NavLink>
+</div>
+
+@code {
+    [Inject]
+    public ICouponService? _service { get; set; }
+    [Inject]
+    public NavigationManager? _navigationManager { get; set; }
+
+    [Parameter]
+    public int Id { get; set; } = 0;
+
+    public CouponDto? _item { get; set; } = default!;
+
+    protected async override Task OnParametersSetAsync()
+    {
+        // await Task.Delay(1000);
+        await load();
+    }
+
+    private async Task load()
+    {
+        if (_service != null)
+        {
+            var response = await _service.GetAsync(Id);
+            if (response is not null && response.IsSuccessful)
+            {
+                _item = JsonConvert.DeserializeObject<CouponDto>(Convert.ToString(response.Result));
+            }
+        }
+    }
+    
+}

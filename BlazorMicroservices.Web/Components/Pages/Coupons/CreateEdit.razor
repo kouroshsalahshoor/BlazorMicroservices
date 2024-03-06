@@ -1,0 +1,84 @@
+﻿@page "/coupon/create"
+@page "/coupon/edit/{id:int}"
+@rendermode InteractiveServer
+
+@inherits OwningComponentBase<ICouponService>
+
+<PageTitle>CreateEdit</PageTitle>
+
+<link href="css/blazorValidation.css" rel="stylesheet" />
+
+<h4 class="bg-@_theme text-center text-white p-2">@(Id == 0 ? "Create" : "Edit")</h4>
+<EditForm Model="_model" OnValidSubmit="HandleValidSubmit">
+    <DataAnnotationsValidator />
+    @if (Id > 0)
+    {
+        <div class="form-group">
+            <label>ID</label>
+            <InputNumber class="form-control" @bind-Value="_model.Id" readonly />
+        </div>
+    }
+    <div class="form-group">
+        <label>Code</label>
+        <InputText class="form-control" @bind-Value="_model.Code" />
+        <ValidationMessage For="@(() => _model.Code)" />
+    </div>
+    <div class="form-group">
+        <label>DiscountAmount</label>
+        <InputNumber class="form-control" @bind-Value="_model.DiscountAmount" />
+        <ValidationMessage For="@(() => _model.DiscountAmount)" />
+    </div>
+    <div class="form-group">
+        <label>MinAmount</label>
+        <InputNumber class="form-control" @bind-Value="_model.MinAmount" />
+        <ValidationMessage For="@(() => _model.MinAmount)" />
+    </div>
+    <div class="text-center">
+        <button type="submit" class="btn btn-@_theme mt-2">Save</button>
+        <NavLink class="btn btn-light mt-2" href="/coupons">Back</NavLink>
+    </div>
+</EditForm>
+
+@code {
+    [Inject]
+    public NavigationManager? _navigationManager { get; set; }
+    ICouponService? _service => Service;
+
+    [Parameter]
+    public int Id { get; set; }
+
+    private CouponDto? _model { get; set; } = new();
+
+    protected async override Task OnParametersSetAsync()
+    {
+        if (_service != null)
+        {
+            if (Id > 0)
+            {
+                var response = await _service.GetAsync(Id);
+                if (response is not null && response.IsSuccessful)
+                {
+                    _model = JsonConvert.DeserializeObject<CouponDto>(Convert.ToString(response.Result)!);
+                }
+            }
+        }
+    }
+    
+    public async Task HandleValidSubmit()
+    {
+        if (_service != null)
+        {
+            if (Id == 0)
+            {
+                await _service.CreateAsync(_model);
+            }
+            else
+            {
+                await _service.UpdateAsync(_model);
+            }
+            _navigationManager?.NavigateTo("/coupons");
+        }
+    }
+
+    private string _theme => Id == 0 ? "primary" : "warning";
+}
