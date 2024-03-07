@@ -6,11 +6,13 @@
 ## Technologies:
 * .Net 8
 * C#
+* Blazor
 * Bootstrap
 * Sql Server
 * Identity (JWT)
 * Web API
 * Entity Framework code first
+* Swagger
 
 ---
 ## Sources
