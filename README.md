@@ -17,6 +17,6 @@
 
 ---
 ## Sources
-* [Complete guide to ASP.NET Core MVC (.NET 8)](https://www.dotnetmastery.com/Home/Details?courseId=9)
+* [.NET Core Microservices - The Complete Guide](https://www.dotnetmastery.com/Home/Details?courseId=19)
 * [Blazor - The Complete Guide (Server & WASM)](https://www.dotnetmastery.com/Home/Details?courseId=17)
 * Pro.ASP.NET.Core.6.9th.Edition.Adam.Freeman.Apress
