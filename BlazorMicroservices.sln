@@ -15,6 +15,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BlazorMicroservices.Service
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BlazorMicroservices.Web", "BlazorMicroservices.Web\BlazorMicroservices.Web.csproj", "{0E685361-BBC0-4627-AE74-F05EF013A549}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BlazorMicroservices.Services.AuthApi", "BlazorMicroservices.Services.AuthApi\BlazorMicroservices.Services.AuthApi.csproj", "{AB6EC4C2-54D7-40EF-B2C6-D1FAC53CF559}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -29,6 +31,10 @@ Global
 		{0E685361-BBC0-4627-AE74-F05EF013A549}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{0E685361-BBC0-4627-AE74-F05EF013A549}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{0E685361-BBC0-4627-AE74-F05EF013A549}.Release|Any CPU.Build.0 = Release|Any CPU
+		{AB6EC4C2-54D7-40EF-B2C6-D1FAC53CF559}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{AB6EC4C2-54D7-40EF-B2C6-D1FAC53CF559}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{AB6EC4C2-54D7-40EF-B2C6-D1FAC53CF559}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{AB6EC4C2-54D7-40EF-B2C6-D1FAC53CF559}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -36,6 +42,7 @@ Global
 	GlobalSection(NestedProjects) = preSolution
 		{855A0AAD-D574-491D-B71A-BC5149BB5D6F} = {127B9AD0-3F27-4DE9-8B7C-EEC9A944509B}
 		{0E685361-BBC0-4627-AE74-F05EF013A549} = {43450177-AAE8-4C4B-A445-C22588A61894}
+		{AB6EC4C2-54D7-40EF-B2C6-D1FAC53CF559} = {127B9AD0-3F27-4DE9-8B7C-EEC9A944509B}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {91EBAB17-41D9-4623-B450-38619E8CF2CE}
