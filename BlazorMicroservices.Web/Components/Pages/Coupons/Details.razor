@@ -1,6 +1,8 @@
 ﻿@page "/coupon/{id:int}"
 @rendermode InteractiveServer
 
+@inject IJSRuntime _js
+
 <style>
     .form-control:disabled {
         background-color: white;
@@ -53,6 +55,14 @@ else
 
     protected async override Task OnParametersSetAsync()
     {
+        var response = await _service.GetAsync(Id);
+        if (response is not null && response.IsSuccessful)
+        {
+            _item = JsonConvert.DeserializeObject<CouponDto>(Convert.ToString(response.Result));
+        }
+    }
+    protected async override Task OnAfterRenderAsync(bool firstRender)
+    {
         // await Task.Delay(1000);
         await load();
     }
@@ -65,6 +75,10 @@ else
             if (response is not null && response.IsSuccessful)
             {
                 _item = JsonConvert.DeserializeObject<CouponDto>(Convert.ToString(response.Result));
+            }
+            else
+            {
+                await _js.ToastrError(response!.Message);
             }
         }
     }

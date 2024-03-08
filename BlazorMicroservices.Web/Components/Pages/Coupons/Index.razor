@@ -1,5 +1,6 @@
 ﻿@page "/coupons"
 @rendermode InteractiveServer
+@attribute [StreamRendering]
 
 @inject ICouponService _service
 @inject IJSRuntime _js
@@ -51,18 +52,38 @@ else
 @code {
 
     private List<CouponDto>? _items = new();
+    ResponseDto? _response = null;
 
     protected override async Task OnInitializedAsync()
+    {
+        _response = await _service.GetAllAsync();
+        if (_response is not null && _response.IsSuccessful)
+        {
+            _items = JsonConvert.DeserializeObject<List<CouponDto>>(Convert.ToString(_response.Result)!);
+        }
+    }
+    protected override async Task OnAfterRenderAsync(bool firstRender)
     {
         await load();
     }
 
     private async Task load()
     {
-        var response = await _service.GetAllAsync();
-        if (response is not null && response.IsSuccessful)
+        _response = await _service.GetAllAsync();
+        if (_response is not null && _response.IsSuccessful)
         {
-            _items = JsonConvert.DeserializeObject<List<CouponDto>>(Convert.ToString(response.Result)!);
+            _items = JsonConvert.DeserializeObject<List<CouponDto>>(Convert.ToString(_response.Result)!);
+        }
+        else
+        {
+            if (_response is null)
+            {
+                await _js.ToastrError("Error");
+            }
+            else
+            {
+                await _js.ToastrError(_response.Message);
+            }
         }
     }
 
@@ -70,8 +91,15 @@ else
     {
         if (await _js.InvokeAsync<bool>("confirm", "Are you sure deleting this item?"))
         {
-            await _service.DeleteAsync(id);
-            await load();
+            var response = await _service.DeleteAsync(id);
+            if (response is not null && response.IsSuccessful)
+            {
+                await load();
+            }
+            else
+            {
+                await _js.ToastrError(response!.Message);
+            }
         }
     }
 

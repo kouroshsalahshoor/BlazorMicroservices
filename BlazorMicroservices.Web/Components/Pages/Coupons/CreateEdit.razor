@@ -4,6 +4,9 @@
 
 @inherits OwningComponentBase<ICouponService>
 
+@* @inject ICouponService _service *@
+@inject IJSRuntime _js
+
 <PageTitle>CreateEdit</PageTitle>
 
 <link href="css/blazorValidation.css" rel="stylesheet" />
@@ -51,6 +54,20 @@
 
     protected async override Task OnParametersSetAsync()
     {
+        var response = await _service.GetAsync(Id);
+        if (response is not null && response.IsSuccessful)
+        {
+            _model = JsonConvert.DeserializeObject<CouponDto>(Convert.ToString(response.Result)!);
+        }
+    }
+
+    protected async override Task OnAfterRenderAsync(bool firstRender)
+    {
+        await load();
+    }
+
+    private async Task load()
+    {
         if (_service != null)
         {
             if (Id > 0)
@@ -60,23 +77,36 @@
                 {
                     _model = JsonConvert.DeserializeObject<CouponDto>(Convert.ToString(response.Result)!);
                 }
+                else
+                {
+                    await _js.ToastrError(response!.Message);
+                }
             }
         }
     }
-    
+
     public async Task HandleValidSubmit()
     {
         if (_service != null)
         {
+            ResponseDto? response = null;
             if (Id == 0)
             {
-                await _service.CreateAsync(_model);
+                response = await _service.CreateAsync(_model!);
             }
             else
             {
-                await _service.UpdateAsync(_model);
+                response = await _service.UpdateAsync(_model!);
             }
-            _navigationManager?.NavigateTo("/coupons");
+
+            if (response is not null && response.IsSuccessful)
+            {
+                _navigationManager?.NavigateTo("/coupons");
+            }
+            else
+            {
+                await _js.ToastrError(response!.Message);
+            }
         }
     }
 
