@@ -13,7 +13,7 @@
 * Web API
 * Entity Framework code first
 * Swagger
-* toastr js
+* [toastr js](https://www.youtube.com/watch?v=yG_sY-CDvXY)
 
 ---
 ## Sources
