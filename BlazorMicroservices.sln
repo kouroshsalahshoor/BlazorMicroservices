@@ -15,7 +15,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BlazorMicroservices.Service
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BlazorMicroservices.Web", "BlazorMicroservices.Web\BlazorMicroservices.Web.csproj", "{0E685361-BBC0-4627-AE74-F05EF013A549}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BlazorMicroservices.Services.AuthApi", "BlazorMicroservices.Services.AuthApi\BlazorMicroservices.Services.AuthApi.csproj", "{AB6EC4C2-54D7-40EF-B2C6-D1FAC53CF559}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BlazorMicroservices.Services.AuthApi", "BlazorMicroservices.Services.AuthApi\BlazorMicroservices.Services.AuthApi.csproj", "{AB6EC4C2-54D7-40EF-B2C6-D1FAC53CF559}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

@@ -1,4 +1,4 @@
-﻿@page "/toastdemo"
+﻿@page "/toastrdemo"
 @using BlazorMicroservices.Web.Extentions
 @inject IJSRuntime _js
 @rendermode InteractiveServer
@@ -15,14 +15,12 @@
     </p>
 </div>
 
-<span class="bi bi-house" aria-hidden="true"></span>
-
 <button class="btn btn-success btn-lg" @onclick="ShowSuccessToast">ShowSuccessToast</button>
 <button class="btn btn-danger btn-lg" @onclick="ShowErrorToast">ShowErrorToast</button>
 
 @code
 {
-    public async Task ShowSuccessToast()
+    private async Task ShowSuccessToast()
     {
 
         //put your logic here
@@ -30,7 +28,7 @@
         await _js.ToastrSuccess("Hello from success toast message");
 
     }
-    public async Task ShowErrorToast()
+    private async Task ShowErrorToast()
     {
         //put your logic here
 

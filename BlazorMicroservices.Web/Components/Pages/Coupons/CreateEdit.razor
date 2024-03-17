@@ -3,27 +3,28 @@
 @rendermode InteractiveServer
 
 @inherits OwningComponentBase<ICouponService>
-
 @* @inject ICouponService _service *@
+
 @inject IJSRuntime _js
 
-<PageTitle>CreateEdit</PageTitle>
-
 <link href="css/blazorValidation.css" rel="stylesheet" />
+
+<PageTitle>CreateEdit</PageTitle>
 
 <h4 class="bg-@_theme text-center text-white p-2">@(Id == 0 ? "Create" : "Edit")</h4>
 <EditForm Model="_model" OnValidSubmit="HandleValidSubmit">
     <DataAnnotationsValidator />
+    <ValidationSummary />
     @if (Id > 0)
     {
         <div class="form-group">
             <label>ID</label>
-            <InputNumber class="form-control" @bind-Value="_model.Id" readonly />
+            <InputNumber class="form-control" @bind-Value="_model!.Id" readonly />
         </div>
     }
     <div class="form-group">
         <label>Code</label>
-        <InputText class="form-control" @bind-Value="_model.Code" />
+        <InputText class="form-control" @bind-Value="_model!.Code" />
         <ValidationMessage For="@(() => _model.Code)" />
     </div>
     <div class="form-group">
@@ -53,20 +54,6 @@
     private CouponDto? _model { get; set; } = new();
 
     protected async override Task OnParametersSetAsync()
-    {
-        var response = await _service.GetAsync(Id);
-        if (response is not null && response.IsSuccessful)
-        {
-            _model = JsonConvert.DeserializeObject<CouponDto>(Convert.ToString(response.Result)!);
-        }
-    }
-
-    protected async override Task OnAfterRenderAsync(bool firstRender)
-    {
-        await load();
-    }
-
-    private async Task load()
     {
         if (_service != null)
         {

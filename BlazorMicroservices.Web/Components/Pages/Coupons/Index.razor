@@ -39,8 +39,8 @@ else
                     <td>@item.MinAmount</td>
                     <td>
                         @* <a class="btn btn-outline-info" href="/coupon/@(item.Id.ToString())">Details</a> *@
-                        <a class="btn btn-sm btn-info" href="@getDetailsUrl(item.Id)">Details</a>
-                        <a class="btn btn-sm btn-warning" href="@getEditUrl(item.Id)">Edit</a>
+                        <NavLink class="btn btn-sm btn-info" href="@($"/coupon/{item.Id.ToString()}")">Details</NavLink>
+                        <NavLink class="btn btn-sm btn-warning" href="@($"/coupon/edit/{item.Id.ToString()}")">Edit</NavLink>
                         <button class="btn btn-sm btn-danger" @onclick="@(async () => await delete(item.Id))">Delete</button>
                     </td>
                 </tr>
@@ -56,33 +56,23 @@ else
 
     protected override async Task OnInitializedAsync()
     {
-        _response = await _service.GetAllAsync();
-        if (_response is not null && _response.IsSuccessful)
-        {
-            _items = JsonConvert.DeserializeObject<List<CouponDto>>(Convert.ToString(_response.Result)!);
-        }
-    }
-    protected override async Task OnAfterRenderAsync(bool firstRender)
-    {
         await load();
     }
 
     private async Task load()
     {
-        _response = await _service.GetAllAsync();
-        if (_response is not null && _response.IsSuccessful)
+        if (_service != null)
         {
-            _items = JsonConvert.DeserializeObject<List<CouponDto>>(Convert.ToString(_response.Result)!);
-        }
-        else
-        {
-            if (_response is null)
+            _response = await _service.GetAllAsync();
+            if (_response is not null && _response.IsSuccessful)
             {
-                await _js.ToastrError("Error");
+                _items = JsonConvert.DeserializeObject<List<CouponDto>>(Convert.ToString(_response.Result)!);
+                // await _js.InvokeVoidAsync("ShowToastr", "success", "Loading successful");
             }
             else
             {
-                await _js.ToastrError(_response.Message);
+                await _js.ToastrError("Error loading");
+                await _js.InvokeVoidAsync("ShowToastr", "error", "Error loading");
             }
         }
     }
@@ -95,6 +85,7 @@ else
             if (response is not null && response.IsSuccessful)
             {
                 await load();
+                await _js.ToastrSuccess("Item was deleted successfully");
             }
             else
             {
@@ -102,7 +93,4 @@ else
             }
         }
     }
-
-    private string getDetailsUrl(int id) => $"/coupon/{id.ToString()}";
-    private string getEditUrl(int id) => $"/coupon/edit/{id.ToString()}";
 }

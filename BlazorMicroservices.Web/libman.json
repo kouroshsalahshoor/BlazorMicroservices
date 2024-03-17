@@ -25,6 +25,10 @@
         "dist/jquery.slim.min.js",
         "dist/jquery.slim.min.map"
       ]
+    },
+    {
+      "library": "sweetalert2@11.10.6",
+      "destination": "wwwroot/lib/sweetalert2/"
     }
   ]
 }

@@ -1,0 +1,22 @@
+﻿@page "/SweetAlertDemo"
+@inject IJSRuntime _js
+@rendermode InteractiveServer
+
+<PageTitle>Sweet Alert Demo</PageTitle>
+
+<button class="btn btn-success" @onclick="showSuccess">ShowSuccess</button>
+<button class="btn btn-danger" @onclick="showError">ShowError</button>
+
+@code
+{
+    private async Task showSuccess()
+    {
+        await _js.InvokeVoidAsync("ShowSwal", "success", "success");
+        // await _js.SwalSuccess("success");
+    }
+    private async Task showError()
+    {
+        await _js.InvokeVoidAsync("ShowSwal", "error", "error");
+        // await _js.SwalError("error");
+    }
+}

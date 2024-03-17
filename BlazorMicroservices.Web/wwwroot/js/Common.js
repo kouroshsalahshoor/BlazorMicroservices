@@ -8,4 +8,21 @@
     if (type === "error") {
         toastr.error(message, "Opration Failed", { timeOut: 20000 });
     }
-};
+}
+
+window.ShowSwal = (type, message) => {
+    if (type === "success") {
+        Swal.fire({
+            title: "Opration Successful!",
+            text: message,
+            icon: "success"
+        });
+    }
+    if (type === "error") {
+        Swal.fire({
+            title: "Opration Failed",
+            text: message,
+            icon: "error"
+        });
+    }
+}

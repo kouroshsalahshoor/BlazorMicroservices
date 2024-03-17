@@ -1,0 +1,13 @@
+﻿@if (_errors.Any())
+{
+    <div>
+        @foreach (var error in _errors)
+        {
+            <p class="text-danger text-center">@error</p>
+        }
+    </div>
+}
+
+@code {
+    [Parameter] public List<string> _errors { get; set; }
+}

@@ -15,5 +15,14 @@ namespace BlazorMicroservices.Web.Extentions
             return jsSRuntime.InvokeVoidAsync("ShowToastr", "error", message);
         }
 
+        public static ValueTask SwalSuccess(this IJSRuntime jSRuntime, string message)
+        {
+            return jSRuntime.InvokeVoidAsync("ShowSwal", "success", message);
+        }
+        public static ValueTask SwalError(this IJSRuntime jsSRuntime, string message)
+        {
+            return jsSRuntime.InvokeVoidAsync("ShowSwal", "error", message);
+        }
+
     }
 }

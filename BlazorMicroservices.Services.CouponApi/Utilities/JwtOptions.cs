@@ -1,4 +1,4 @@
-﻿namespace BlazorMicroservices.Services.AuthApi.Models
+﻿namespace BlazorMicroservices.Services.CouponApi.Utilities
 {
     public class JwtOptions
     {

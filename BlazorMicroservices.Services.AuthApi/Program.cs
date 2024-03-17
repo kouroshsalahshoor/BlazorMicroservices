@@ -2,6 +2,7 @@ using BlazorMicroservices.Services.AuthApi.Data;
 using BlazorMicroservices.Services.AuthApi.Models;
 using BlazorMicroservices.Services.AuthApi.Services;
 using BlazorMicroservices.Services.AuthApi.Services.IServices;
+using BlazorMicroservices.Services.AuthApi.Utilities;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 
@@ -14,12 +15,13 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
+builder.Services.Configure<JwtOptions>(builder.Configuration.GetSection("ApiSettings:JwtOptions"));
+
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
 {
     options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"));
     options.EnableSensitiveDataLogging(true);
 });
-builder.Services.Configure<JwtOptions>(builder.Configuration.GetSection("ApiSettings:JwtOptions"));
 builder.Services.AddIdentity<ApplicationUser, IdentityRole>().AddEntityFrameworkStores<ApplicationDbContext>().AddDefaultTokenProviders();
 
 builder.Services.AddScoped<IJwtTokenGenerator, JwtTokenGenerator>();

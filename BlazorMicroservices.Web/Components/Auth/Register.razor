@@ -1,0 +1,70 @@
+﻿@page "/register"
+@rendermode InteractiveServer
+
+<PageTitle>Register</PageTitle>
+
+<EditForm Model="_model" OnValidSubmit="onValidSubmit" class="pt-4">
+    <DataAnnotationsValidator />
+
+    @if (_isProcessing)
+    {
+        <p>Processing ...</p>
+    }
+
+    <div class="py-4">
+        <div class=" row form-group ">
+            <div class="col-6 offset-3 ">
+                <div class="card border">
+                    <div class="card-body px-lg-5 pt-4">
+
+                        <h3 class="col-12 text-success text-center py-2">
+                            <strong>Register</strong>
+                        </h3>
+
+                        <Errors _errors="_errors" />
+
+                        <div class="py-2">
+                            <InputText @bind-Value="_model.UserName" class="form-control" placeholder="UserName..." />
+                            <ValidationMessage For="(()=>_model.UserName)" />
+                        </div>
+                        <div class="py-2">
+                            <InputText @bind-Value="_model.Email" type="text" class="form-control" placeholder="Email..." />
+                            <ValidationMessage For="(()=>_model.Email)" />
+                        </div>
+                        <div class="py-2">
+                            <InputText @bind-Value="_model.FirstName" class="form-control" placeholder="FirstName..." />
+                            <ValidationMessage For="(()=>_model.FirstName)" />
+                        </div>
+                        <div class="py-2">
+                            <InputText @bind-Value="_model.LastName" class="form-control" placeholder="LastName..." />
+                            <ValidationMessage For="(()=>_model.LastName)" />
+                        </div>
+                        <div class="py-2 input-group">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text"> +1</span>
+                            </div>
+                            <InputText @bind-Value="_model.PhoneNumber" type="text" class="form-control" placeholder="Phone number..." />
+                            <ValidationMessage For="(()=>_model.PhoneNumber)" />
+                        </div>
+                        <div class="form-row py-2">
+                            <div class="col">
+                                <InputText @bind-Value="_model.Password" type="password" id="password" placeholder="Password..." class="form-control" />
+                                <ValidationMessage For="(()=>_model.Password)" />
+                            </div>
+                            <div class="col py-2">
+                                <InputText @bind-Value="_model.ConfirmPassword" type="password" id="confirm" class="form-control" placeholder="Confirm Password..." />
+                                <ValidationMessage For="(()=>_model.ConfirmPassword)" />
+                            </div>
+                        </div>
+
+                        <hr style="background-color:aliceblue" />
+                        <div class="py-2">
+                            <button type="submit" class="btn btn-success btn-block"><i class="bi bi-person-plus-fill"></i> Register</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</EditForm>
+

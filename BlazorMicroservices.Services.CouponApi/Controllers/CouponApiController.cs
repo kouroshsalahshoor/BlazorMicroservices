@@ -3,6 +3,7 @@ using BlazorMicroservices.Services.CouponApi.Data;
 using BlazorMicroservices.Services.CouponApi.Models;
 using BlazorMicroservices.Services.CouponApi.Models.Dtos;
 using BlazorMicroservices.Services.CouponApi.Utilities;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace BlazorMicroservices.Services.CouponApi.Controllers
@@ -10,6 +11,7 @@ namespace BlazorMicroservices.Services.CouponApi.Controllers
     [Route("api/coupon")]
     //[Route("api/[controller]")]
     [ApiController]
+    [Authorize(Roles = SD.Role_Admins)]
     public class CouponApiController : ControllerBase
     {
         private readonly ApplicationDbContext _db;

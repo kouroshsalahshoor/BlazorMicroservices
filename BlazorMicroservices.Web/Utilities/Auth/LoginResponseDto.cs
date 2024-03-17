@@ -1,4 +1,4 @@
-﻿namespace BlazorMicroservices.Services.AuthApi.Models.Dto
+﻿namespace BlazorMicroservices.Web.Utilities.Auth
 {
     public class LoginResponseDto
     {

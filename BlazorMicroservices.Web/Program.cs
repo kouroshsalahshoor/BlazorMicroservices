@@ -2,6 +2,7 @@ using BlazorMicroservices.Web.Components;
 using BlazorMicroservices.Web.Services;
 using BlazorMicroservices.Web.Services.IServices;
 using BlazorMicroservices.Web.Utilities;
+using Microsoft.AspNetCore.Components.Authorization;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -12,13 +13,17 @@ builder.Services.AddRazorComponents()
 builder.Services.AddHttpContextAccessor();
 builder.Services.AddHttpClient();
 
+builder.Services.AddAuthorizationCore();
+builder.Services.AddScoped<AuthenticationStateProvider, AuthStateProvider>();
+builder.Services.AddScoped<IAuthenticationService, AuthenticationService>();
+
 builder.Services.AddHttpClient<ICouponService, CouponService>();
 
 SD.CouponApiBase = builder.Configuration["ServiceUrls:CouponApi"];
+SD.AuthApiBase = builder.Configuration["ServiceUrls:AuthApi"];
 
 builder.Services.AddScoped<IBaseService, BaseService>();
 builder.Services.AddScoped<ICouponService, CouponService>();
-
 
 var app = builder.Build();
 
