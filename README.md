@@ -14,6 +14,8 @@
 * Entity Framework code first
 * Swagger
 * [toastr js](https://www.youtube.com/watch?v=yG_sY-CDvXY)
+* [sweetalert2](https://sweetalert2.github.io/)
+* 
 
 ---
 ## Sources
