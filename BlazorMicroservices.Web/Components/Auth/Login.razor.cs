@@ -13,7 +13,7 @@ namespace BlazorMicroservices.Web.Components.Auth
         private LoginRequestDto _model = new();
         private bool _isProcessing { get; set; } = false;
         private List<string> _errors { get; set; } = new();
-        private string _returnUrl { get; set; }
+        private string _returnUrl { get; set; } = string.Empty;
 
         private async Task onValidSubmit()
         {

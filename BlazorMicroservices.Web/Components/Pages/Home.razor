@@ -17,6 +17,7 @@
 
 @code{
     [Inject] public AuthenticationStateProvider _authenticationStateProvider { get; set; }
+    [Inject] public ProtectedLocalStorage _protectedLocalStorage { get; set; }
     private string userName = string.Empty;
 
     protected async override Task OnInitializedAsync()
@@ -27,5 +28,9 @@
         {
             userName = userNameClaim!.Value;
         }
+
+        //getting current userDetails from localsorage
+        var result = await _protectedLocalStorage.GetAsync<UserDto>(SD.UserDetails);
+        var userDto = result.Success ? result.Value : null;
     }
 }

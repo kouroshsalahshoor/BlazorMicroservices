@@ -63,8 +63,11 @@ namespace BlazorMicroservices.Web.Services
             {
                 await _protectedLocalStorage.SetAsync(SD.JwtToken, loginResult.Token);
                 await _protectedLocalStorage.SetAsync(SD.UserDetails, loginResult.UserDto);
+               
                 ((AuthStateProvider)_authStateProvider).NotifyUserLoggedIn(loginResult.Token);
+
                 _client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("bearer", loginResult.Token);
+
                 return new ResponseDto() { IsSuccessful = true };
             }
             else
@@ -102,11 +105,10 @@ namespace BlazorMicroservices.Web.Services
             await _protectedLocalStorage.DeleteAsync(SD.JwtToken);
             await _protectedLocalStorage.DeleteAsync(SD.UserDetails);
 
-            _client.DefaultRequestHeaders.Authorization = null;
-
             ((AuthStateProvider)_authStateProvider).NotifyUserLogout();
 
             _client.DefaultRequestHeaders.Authorization = null;
+
         }
     }
 }
