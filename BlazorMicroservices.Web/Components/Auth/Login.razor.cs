@@ -17,11 +17,12 @@ namespace BlazorMicroservices.Web.Components.Auth
 
         private async Task onValidSubmit()
         {
+            _errors.Clear();
             _isProcessing = true;
             var result = await _authSerivce.Login(_model);
             if (result is not null && result.IsSuccessful)
             {
-                //regiration is successful
+                //login is successful
                 var absoluteUri = new Uri(_navigationManager.Uri);
                 var queryParam = HttpUtility.ParseQueryString(absoluteUri.Query);
                 _returnUrl = queryParam["returnUrl"];

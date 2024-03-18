@@ -21,6 +21,8 @@ namespace BlazorMicroservices.Services.AuthApi.Controllers
         [HttpPost("register")]
         public async Task<IActionResult> Register([FromBody] RegisterRequestDto dto)
         {
+            _response.Errors.Clear();
+
             if (dto == null || !ModelState.IsValid)
             {
                 return BadRequest();
@@ -30,6 +32,7 @@ namespace BlazorMicroservices.Services.AuthApi.Controllers
             if (registerResponse.IsSuccessful == false)
             {
                 _response.IsSuccessful = false;
+                _response.Errors = registerResponse.Errors.ToList()!;
                 _response.Message = registerResponse.Errors.FirstOrDefault()!;
                 return BadRequest(_response);
             }
@@ -47,6 +50,7 @@ namespace BlazorMicroservices.Services.AuthApi.Controllers
             if (roleResult == false)
             {
                 _response.IsSuccessful = false;
+                _response.Errors.Add("Error creating role at register");
                 _response.Message = "Error creating role at register";
                 return BadRequest(_response);
             }

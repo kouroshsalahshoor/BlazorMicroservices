@@ -15,11 +15,11 @@
     <link rel="stylesheet" href="lib/sweetalert2/sweetalert2.min.css" />
 
     <link rel="icon" type="image/png" href="favicon.png" />
-    <HeadOutlet />
+    <HeadOutlet @rendermode="new InteractiveServerRenderMode(prerender: false)" />
 </head>
 
 <body>
-    <Routes />
+    <Routes @rendermode="new InteractiveServerRenderMode(prerender: false)" />
     <script src="_framework/blazor.web.js"></script>
 
     <script src="lib/jquery/dist/jquery.min.js"></script>

@@ -1,5 +1,7 @@
 ﻿@inherits LayoutComponentBase
 
+@inject AuthenticationStateProvider _authenticationStateProvider
+
 <div class="page">
     <div class="sidebar">
         <NavMenu />
@@ -8,6 +10,19 @@
     <main>
         <div class="top-row px-4">
             <a href="https://learn.microsoft.com/aspnet/core/" target="_blank">About</a>
+
+            <CascadingAuthenticationState>
+                <AuthorizeView>
+                    <Authorized>
+                        <a style="text-decoration: none;">Welcome @userName</a>
+                        <a href="logout">Logout</a>
+                    </Authorized>
+                    <NotAuthorized>
+                        <a href="register">Register</a>
+                        <a href="login">Login</a>
+                    </NotAuthorized>
+                </AuthorizeView>
+            </CascadingAuthenticationState>
         </div>
 
         <article class="content px-4">
@@ -21,3 +36,19 @@
     <a href="" class="reload">Reload</a>
     <a class="dismiss">🗙</a>
 </div>
+
+@code {
+    private string userName = string.Empty;
+
+    protected async override Task OnInitializedAsync()
+    {
+        var authstate = await _authenticationStateProvider.GetAuthenticationStateAsync();
+        var userNameClaim = authstate.User.Claims.SingleOrDefault(x=>x.Type == "UserName");
+        if (userNameClaim is not null)
+        {
+            userName = userNameClaim!.Value;
+            // var user = authstate.User;
+            // var name = user.Identity.Name;
+        }
+    }
+}

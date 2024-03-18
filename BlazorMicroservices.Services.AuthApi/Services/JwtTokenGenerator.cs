@@ -29,6 +29,8 @@ namespace BlazorMicroservices.Services.AuthApi.Services
                 new Claim("FirstName",applicationUser.FirstName),
                 new Claim("LastName",applicationUser.LastName),
                 new Claim("PhoneNumber",applicationUser.PhoneNumber),
+                new Claim("Name",applicationUser.UserName),
+                new Claim(ClaimTypes.Name,applicationUser.UserName),
             };
 
             claims.AddRange(roles.Select(role => new Claim(ClaimTypes.Role, role)));

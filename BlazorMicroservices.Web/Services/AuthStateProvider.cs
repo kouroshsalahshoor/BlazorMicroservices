@@ -44,8 +44,8 @@ namespace BlazorMicroservices.Web.Services
 
         public void NotifyUserLoggedIn(string token)
         {
-            var authenticatedUser = new ClaimsPrincipal(new ClaimsIdentity(JwtParser.ParseClaimsFromJwt(token), "jwtAuthType"));
-            var authState = Task.FromResult(new AuthenticationState(authenticatedUser));
+            var claimsPrincipal = new ClaimsPrincipal(new ClaimsIdentity(JwtParser.ParseClaimsFromJwt(token), "jwtAuthType"));
+            var authState = Task.FromResult(new AuthenticationState(claimsPrincipal));
             NotifyAuthenticationStateChanged(authState);
         }
 

@@ -21,7 +21,7 @@ namespace BlazorMicroservices.Web.Components.Auth
             _errors.Clear();
             _isProcessing = true;
 
-            var result = await _authSerivce!.RegisterUser(_model);
+            var result = await _authSerivce!.Register(_model);
             if (result.IsSuccessful)
             {
                 //regiration is successful
@@ -30,7 +30,8 @@ namespace BlazorMicroservices.Web.Components.Auth
             else
             {
                 //failure
-                _errors.Add(result.Message);
+                _errors = result.Errors.ToList();
+                //_errors.Add(result.Message);
             }
             _isProcessing = false;
         }

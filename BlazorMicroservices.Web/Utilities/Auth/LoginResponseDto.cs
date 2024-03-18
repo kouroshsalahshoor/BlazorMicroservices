@@ -2,7 +2,9 @@
 {
     public class LoginResponseDto
     {
-        public UserDto User { get; set; }
-        public string Token { get; set; }
+        public bool IsSuccessful { get; set; }
+        public string? ErrorMessage { get; set; }
+        public string? Token { get; set; }
+        public UserDto? UserDto { get; set; }
     }
 }

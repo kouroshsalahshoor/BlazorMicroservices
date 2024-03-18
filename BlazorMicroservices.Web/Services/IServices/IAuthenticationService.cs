@@ -5,7 +5,7 @@ namespace BlazorMicroservices.Web.Services.IServices
 {
     public interface IAuthenticationService
     {
-        Task<ResponseDto> RegisterUser(RegisterRequestDto registerRequestDto);
+        Task<ResponseDto> Register(RegisterRequestDto registerRequestDto);
         Task<ResponseDto> Login(LoginRequestDto loginRequestDto);
         Task Logout();
     }
