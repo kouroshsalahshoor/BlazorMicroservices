@@ -57,6 +57,17 @@
                             </div>
                         </div>
 
+                        <div class="py-2">
+                            <InputSelect @bind-Value="_model.Role" class="form-select">
+                                <option value="" disabled selected>Please Select a Role ...</option>
+                                @foreach (var item in _roles)
+                                {
+                                    <option value="@item">@item</option>
+                                }
+                            </InputSelect>
+                            <ValidationMessage For="(()=>_model.Role)" />
+                        </div>
+
                         <hr style="background-color:aliceblue" />
                         <div class="py-2">
                             <button type="submit" class="btn btn-success btn-block"><i class="bi bi-person-plus-fill"></i> Register</button>

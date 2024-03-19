@@ -7,7 +7,7 @@ namespace BlazorMicroservices.Web.Components.Auth
 {
     public partial class Login
     {
-        [Inject] public IAuthenticationService _authSerivce { get; set; }
+        [Inject] public IAuthService _authSerivce { get; set; }
         [Inject] public NavigationManager _navigationManager { get; set; }
 
         private LoginRequestDto _model = new();
@@ -20,27 +20,33 @@ namespace BlazorMicroservices.Web.Components.Auth
             _errors.Clear();
             _isProcessing = true;
             var result = await _authSerivce.Login(_model);
-            if (result is not null && result.IsSuccessful)
+            if (result is null)
             {
-                //login is successful
-                var absoluteUri = new Uri(_navigationManager.Uri);
-                var queryParam = HttpUtility.ParseQueryString(absoluteUri.Query);
-                _returnUrl = queryParam["returnUrl"];
-                if (string.IsNullOrEmpty(_returnUrl))
-                {
-                    _navigationManager.NavigateTo("/");
-                }
-                else
-                {
-                    _navigationManager.NavigateTo("/" + _returnUrl);
-                }
+                _errors.Add("Error connecting auth service!");
             }
             else
             {
-                //failure
-                _errors = result.Errors.ToList();
-
+                if (result.IsSuccessful)
+                {
+                    //login is successful
+                    var absoluteUri = new Uri(_navigationManager.Uri);
+                    var queryParam = HttpUtility.ParseQueryString(absoluteUri.Query);
+                    _returnUrl = queryParam["returnUrl"]!;
+                    if (string.IsNullOrEmpty(_returnUrl))
+                    {
+                        _navigationManager.NavigateTo("/");
+                    }
+                    else
+                    {
+                        _navigationManager.NavigateTo("/" + _returnUrl);
+                    }
+                }
+                else
+                {
+                    _errors = result.Errors.ToList();
+                }
             }
+
             _isProcessing = false;
         }
     }

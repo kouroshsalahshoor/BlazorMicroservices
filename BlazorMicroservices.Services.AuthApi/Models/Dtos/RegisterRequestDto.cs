@@ -21,6 +21,7 @@ namespace BlazorMicroservices.Services.AuthApi.Models.Dtos
         public string FirstName { get; set; }
         [Required(ErrorMessage = "{0} is required.")]
         public string LastName { get; set; }
-        public string? Role { get; set; }
+        [Required(ErrorMessage = "{0} is required.")]
+        public string Role { get; set; }
     }
 }
