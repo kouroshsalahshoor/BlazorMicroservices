@@ -1,6 +1,7 @@
 ﻿@inherits LayoutComponentBase
 
-@inject AuthenticationStateProvider _authenticationStateProvider
+@inject CurrentUserService _currentUserService
+@* @inject AuthenticationStateProvider _authenticationStateProvider *@
 
 <div class="page">
     <div class="sidebar">
@@ -14,7 +15,10 @@
             <CascadingAuthenticationState>
                 <AuthorizeView>
                     <Authorized>
-                        <a style="text-decoration: none;">Welcome @userName</a>
+                        <a style="text-decoration: none;">
+                            Welcome @(_currentUserService == null ? "" : _currentUserService.User == null ? "" : _currentUserService.User.UserName)
+                        </a>
+                        @* <a style="text-decoration: none;">Welcome @userName</a> *@
                         <a href="logout">Logout</a>
                     </Authorized>
                     <NotAuthorized>
@@ -38,17 +42,22 @@
 </div>
 
 @code {
-    private string userName = string.Empty;
+    // [CascadingParameter]
+    // public Task<AuthenticationState> AuthState { get; set; }
+
+    private string userName { get; set; } = string.Empty;
 
     protected async override Task OnInitializedAsync()
     {
-        var authstate = await _authenticationStateProvider.GetAuthenticationStateAsync();
-        var userNameClaim = authstate.User.Claims.SingleOrDefault(x=>x.Type == "UserName");
-        if (userNameClaim is not null)
-        {
-            userName = userNameClaim!.Value;
-            // var user = authstate.User;
-            // var name = user.Identity.Name;
-        }
+        // var authState = await AuthState;
+        // var authState = await _authenticationStateProvider.GetAuthenticationStateAsync();
+
+        // var userNameClaim = authState.User.Claims.SingleOrDefault(x => x.Type == "UserName");
+        // if (userNameClaim is not null)
+        // {
+        //     userName = userNameClaim!.Value;
+        //     // var user = authstate.User;
+        //     // var name = user.Identity.Name;
+        // }
     }
 }

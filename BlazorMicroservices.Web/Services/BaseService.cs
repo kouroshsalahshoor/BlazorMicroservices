@@ -1,7 +1,10 @@
 ﻿using BlazorMicroservices.Web.Services.IServices;
 using BlazorMicroservices.Web.Utilities;
+using BlazorMicroservices.Web.Utilities.Auth;
+using Microsoft.AspNetCore.Components.Server.ProtectedBrowserStorage;
 using Newtonsoft.Json;
 using System.Net;
+using System.Net.Http.Headers;
 using System.Text;
 using static BlazorMicroservices.Web.Utilities.SD;
 
@@ -10,10 +13,12 @@ namespace BlazorMicroservices.Web.Services
     public class BaseService : IBaseService
     {
         private readonly IHttpClientFactory _httpClientFactory;
+        private readonly ProtectedLocalStorage _protectedLocalStorage;
 
-        public BaseService(IHttpClientFactory httpClientFactory)
+        public BaseService(IHttpClientFactory httpClientFactory, ProtectedLocalStorage protectedLocalStorage)
         {
             _httpClientFactory = httpClientFactory;
+            _protectedLocalStorage = protectedLocalStorage;
         }
         public async Task<ResponseDto?> SendAsync(RequestDto requestDto)
         {

@@ -1,9 +1,10 @@
 ﻿using BlazorMicroservices.Web.Services.IServices;
+using BlazorMicroservices.Web.Utilities;
 using BlazorMicroservices.Web.Utilities.Auth;
 using Microsoft.AspNetCore.Components;
 using System.Web;
 
-namespace BlazorMicroservices.Web.Components.Auth
+namespace BlazorMicroservices.Web.Components.Pages.Auth
 {
     public partial class Login
     {

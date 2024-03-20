@@ -1,5 +1,6 @@
 ﻿using BlazorMicroservices.Web.Services.IServices;
 using BlazorMicroservices.Web.Utilities;
+using BlazorMicroservices.Web.Utilities.AppStates;
 using BlazorMicroservices.Web.Utilities.Auth;
 using Microsoft.AspNetCore.Components.Authorization;
 using Microsoft.AspNetCore.Components.Server.ProtectedBrowserStorage;
@@ -15,13 +16,15 @@ namespace BlazorMicroservices.Web.Services
         private readonly ProtectedLocalStorage _protectedLocalStorage;
         private readonly AuthenticationStateProvider _authStateProvider;
         private readonly HttpClient _client;
+        private readonly CurrentUserService _currentUserService;
 
-        public AuthService(IBaseService baseService, ProtectedLocalStorage protectedLocalStorage, AuthenticationStateProvider authStateProvider, HttpClient client)
+        public AuthService(IBaseService baseService, ProtectedLocalStorage protectedLocalStorage, AuthenticationStateProvider authStateProvider, HttpClient client, CurrentUserService currentUserService)
         {
             _baseService = baseService;
             _authStateProvider = authStateProvider;
             _client = client;
             _protectedLocalStorage = protectedLocalStorage;
+            _currentUserService = currentUserService;
         }
         public async Task<ResponseDto?> Register(RegisterRequestDto dto)
         {
@@ -61,13 +64,19 @@ namespace BlazorMicroservices.Web.Services
 
             if (response is not null && response.IsSuccessful)
             {
-                var loginResponseDto = JsonConvert.DeserializeObject<LoginResponseDto>(response.Result.ToString());
+                var loginResponseDto = JsonConvert.DeserializeObject<LoginResponseDto>(response.Result!.ToString()!);
 
-                if (loginResponseDto is not null)
+                if (loginResponseDto is not null && loginResponseDto.IsSuccessful)
                 {
-                    await _protectedLocalStorage.SetAsync(SD.JwtToken, loginResponseDto.Token);
-                    await _protectedLocalStorage.SetAsync(SD.UserDetails, loginResponseDto.UserDto);
-                    ((AuthStateProvider)_authStateProvider).NotifyUserLoggedIn(loginResponseDto.Token);
+                    await _protectedLocalStorage.SetAsync(SD.JwtToken, loginResponseDto.Token!);
+                    await _protectedLocalStorage.SetAsync(SD.UserDetails, loginResponseDto.UserDto!);
+
+                    _currentUserService.User = loginResponseDto.UserDto;
+
+                    _client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("bearer", loginResponseDto.Token);
+
+                    ((AuthStateProvider)_authStateProvider).NotifyUserLoggedIn(loginResponseDto.Token!);
+
                     return new ResponseDto() { IsSuccessful = true };
                 }
             }
@@ -88,7 +97,7 @@ namespace BlazorMicroservices.Web.Services
         //    {
         //        await _protectedLocalStorage.SetAsync(SD.JwtToken, loginResult.Token);
         //        await _protectedLocalStorage.SetAsync(SD.UserDetails, loginResult.UserDto);
-               
+
         //        ((AuthStateProvider)_authStateProvider).NotifyUserLoggedIn(loginResult.Token);
 
         //        _client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("bearer", loginResult.Token);

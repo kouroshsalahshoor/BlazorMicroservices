@@ -1,6 +1,6 @@
-﻿using BlazorMicroservices.Web.Dtos;
-using BlazorMicroservices.Web.Services.IServices;
+﻿using BlazorMicroservices.Web.Services.IServices;
 using BlazorMicroservices.Web.Utilities;
+using BlazorMicroservices.Web.Utilities.Dtos;
 
 namespace BlazorMicroservices.Web.Services
 {

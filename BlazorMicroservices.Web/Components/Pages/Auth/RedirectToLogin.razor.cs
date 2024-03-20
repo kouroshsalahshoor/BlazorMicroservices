@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNetCore.Components.Authorization;
 using Microsoft.AspNetCore.Components;
 
-namespace BlazorMicroservices.Web.Components.Auth
+namespace BlazorMicroservices.Web.Components.Pages.Auth
 {
     public partial class RedirectToLogin
     {

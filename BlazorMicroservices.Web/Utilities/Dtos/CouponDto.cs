@@ -1,4 +1,4 @@
-﻿namespace BlazorMicroservices.Web.Dtos
+﻿namespace BlazorMicroservices.Web.Utilities.Dtos
 {
     public class CouponDto
     {
