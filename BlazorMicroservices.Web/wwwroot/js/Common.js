@@ -3,10 +3,12 @@
     toastr.options.toastClass = "toastr";
 
     if (type === "success") {
-        toastr.success(message, "Opration Successful", { timeOut: 20000 });
+        toastr.success(message, "", { timeOut: 5000 });
+        //toastr.success(message, "Opration Successful", { timeOut: 20000 });
     }
     if (type === "error") {
-        toastr.error(message, "Opration Failed", { timeOut: 20000 });
+        toastr.error(message, "", { timeOut: 5000 });
+        //toastr.error(message, "Opration Failed", { timeOut: 20000 });
     }
 }
 

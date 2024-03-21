@@ -86,7 +86,6 @@ namespace BlazorMicroservices.Services.AuthApi.Services
 
         public async Task<LoginResponseDto> Login(LoginRequestDto dto)
         {
-
             var result = await _signInManager.PasswordSignInAsync(dto.UserName, dto.Password, isPersistent: true, lockoutOnFailure: false);
 
             if (!result.Succeeded)

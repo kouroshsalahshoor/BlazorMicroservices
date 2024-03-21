@@ -1,6 +1,5 @@
 ﻿using Microsoft.JSInterop;
 namespace BlazorMicroservices.Web.Extentions
-
 {
     public static class JsRuntimeExtentions
     {

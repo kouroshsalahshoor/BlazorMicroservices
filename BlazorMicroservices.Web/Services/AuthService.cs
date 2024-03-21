@@ -6,7 +6,6 @@ using Microsoft.AspNetCore.Components.Authorization;
 using Microsoft.AspNetCore.Components.Server.ProtectedBrowserStorage;
 using Newtonsoft.Json;
 using System.Net.Http.Headers;
-using System.Text;
 
 namespace BlazorMicroservices.Web.Services
 {
@@ -62,26 +61,33 @@ namespace BlazorMicroservices.Web.Services
                 Data = dto
             });
 
-            if (response is not null && response.IsSuccessful)
+            if (response is not null)
             {
-                var loginResponseDto = JsonConvert.DeserializeObject<LoginResponseDto>(response.Result!.ToString()!);
-
-                if (loginResponseDto is not null && loginResponseDto.IsSuccessful)
+                if (response.IsSuccessful)
                 {
-                    await _protectedLocalStorage.SetAsync(SD.JwtToken, loginResponseDto.Token!);
-                    await _protectedLocalStorage.SetAsync(SD.UserDetails, loginResponseDto.UserDto!);
+                    var loginResponseDto = JsonConvert.DeserializeObject<LoginResponseDto>(Convert.ToString(response.Result));
 
-                    _currentUserService.User = loginResponseDto.UserDto;
+                    if (loginResponseDto is not null && loginResponseDto.IsSuccessful)
+                    {
+                        await _protectedLocalStorage.SetAsync(SD.JwtToken, loginResponseDto.Token!);
+                        await _protectedLocalStorage.SetAsync(SD.UserDetails, loginResponseDto.UserDto!);
 
-                    _client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("bearer", loginResponseDto.Token);
+                        _currentUserService.User = loginResponseDto.UserDto;
 
-                    ((AuthStateProvider)_authStateProvider).NotifyUserLoggedIn(loginResponseDto.Token!);
+                        _client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("bearer", loginResponseDto.Token);
 
-                    return new ResponseDto() { IsSuccessful = true };
+                        ((AuthStateProvider)_authStateProvider).NotifyUserLoggedIn(loginResponseDto.Token!);
+
+                        return new ResponseDto() { IsSuccessful = true };
+                    }
+                }
+                else
+                {
+                    return new ResponseDto { IsSuccessful = false, Message = response.Errors.FirstOrDefault()!, Errors = response.Errors };
                 }
             }
 
-            return new ResponseDto { IsSuccessful = false, Message = "Login failed!", Errors = new List<string> { "Login failed!" } };
+            return new ResponseDto { IsSuccessful = false, Message = "Login failed!", Errors = new List<string> { "Login failed!", "No response!" } };
         }
         //public async Task<ResponseDto> Login(LoginRequestDto dto)
         //{
@@ -117,7 +123,6 @@ namespace BlazorMicroservices.Web.Services
             ((AuthStateProvider)_authStateProvider).NotifyUserLogout();
 
             _client.DefaultRequestHeaders.Authorization = null;
-
         }
     }
 }

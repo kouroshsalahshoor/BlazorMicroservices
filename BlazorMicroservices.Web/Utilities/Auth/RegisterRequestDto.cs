@@ -9,6 +9,7 @@ namespace BlazorMicroservices.Web.Utilities.Auth
         [Required(ErrorMessage = "{0} is required")]
         [RegularExpression("^[a-zA-Z0-9_.-]+@[a-zA-Z0-9-]+.[a-zA-Z0-9-.]+$", ErrorMessage = "Invalid {0}")]
         public string Email { get; set; }
+        [Required(ErrorMessage = "{0} is required.")]
         public string PhoneNumber { get; set; }
         [Required(ErrorMessage = "{0} is required.")]
         [DataType(DataType.Password)]

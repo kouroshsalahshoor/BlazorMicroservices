@@ -29,6 +29,9 @@ namespace BlazorMicroservices.Web.Services
                 message.Headers.Add("Accept", "application/json");
 
                 //token
+                var result = await _protectedLocalStorage.GetAsync<string>(SD.JwtToken);
+                var token = result.Success ? result.Value : null;
+                message.Headers.Add("Authorization", $"Bearer {token}");
 
                 message.RequestUri = new Uri(requestDto.Url);
                 if (requestDto.Data is not null)

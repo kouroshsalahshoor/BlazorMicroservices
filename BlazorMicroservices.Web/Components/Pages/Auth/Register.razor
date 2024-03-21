@@ -39,11 +39,12 @@
                             <InputText @bind-Value="_model.LastName" class="form-control" placeholder="LastName..." />
                             <ValidationMessage For="(()=>_model.LastName)" />
                         </div>
-                        <div class="py-2 input-group">
-                            <div class="input-group-prepend">
-                                <span class="input-group-text"> +46</span>
-                            </div>
-                            <InputText @bind-Value="_model.PhoneNumber" type="text" class="form-control" placeholder="Phone number..." />
+                        <div class="py-2">
+                            @* <div class="py-2 input-group"> *@
+                            @* <div class="input-group-prepend">
+                            <span class="input-group-text"> +46</span>
+                            </div> *@
+                            <InputText @bind-Value="_model.PhoneNumber" class="form-control" placeholder="Phone number..." />
                             <ValidationMessage For="(()=>_model.PhoneNumber)" />
                         </div>
                         <div class="form-row py-2">

@@ -3,7 +3,9 @@ using BlazorMicroservices.Web.Services;
 using BlazorMicroservices.Web.Services.IServices;
 using BlazorMicroservices.Web.Utilities;
 using BlazorMicroservices.Web.Utilities.AppStates;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Components.Authorization;
+using System.Text;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -11,13 +13,13 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddRazorComponents()
     .AddInteractiveServerComponents();
 
-builder.Services.AddHttpContextAccessor();
+//builder.Services.AddHttpContextAccessor();
 builder.Services.AddHttpClient();
-
 builder.Services.AddHttpClient<ICouponService, CouponService>();
 builder.Services.AddHttpClient<IAuthService, AuthService>();
 
-builder.Services.AddAuthorizationCore();
+builder.Services.AddAuthentication();
+builder.Services.AddAuthorization();
 builder.Services.AddScoped<AuthenticationStateProvider, AuthStateProvider>();
 
 SD.CouponApiBase = builder.Configuration["ServiceUrls:CouponApi"];
@@ -43,6 +45,9 @@ if (!app.Environment.IsDevelopment())
 app.UseHttpsRedirection();
 
 app.UseStaticFiles();
+
+app.UseAuthentication();
+app.UseAuthorization();
 app.UseAntiforgery();
 
 app.MapRazorComponents<App>()

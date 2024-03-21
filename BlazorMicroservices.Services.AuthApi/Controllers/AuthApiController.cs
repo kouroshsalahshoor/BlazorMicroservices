@@ -69,18 +69,17 @@ namespace BlazorMicroservices.Services.AuthApi.Controllers
             var loginResponse = await _authService.Login(dto);
             if (loginResponse.IsSuccessful == false)
             {
-                _response.IsSuccessful = false;
-                _response.Message = "Invalid Authentication";
-                return Unauthorized(_response);
-            }
-            else
-            {
                 if (loginResponse.UserDto == null)
                 {
                     _response.IsSuccessful = false;
                     _response.Message = "Username or password is incorrect";
+                    _response.Errors.Add("Username or password is incorrect");
                     return BadRequest(_response);
                 }
+                //_response.IsSuccessful = false;
+                //_response.Message = "Invalid Authentication";
+                //_response.Errors.Add("Invalid Authentication");
+                //return Unauthorized(_response);
             }
 
             _response.Result = loginResponse;

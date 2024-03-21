@@ -1,4 +1,7 @@
 ﻿@page "/coupons"
+
+@attribute [Authorize]
+@* @attribute [Authorize(Roles = SD.Role_Admins)] *@
 @rendermode InteractiveServer
 @attribute [StreamRendering]
 
@@ -71,8 +74,19 @@ else
             }
             else
             {
-                await _js.ToastrError("Error loading");
-                await _js.InvokeVoidAsync("ShowToastr", "error", "Error loading");
+                if (!string.IsNullOrEmpty(_response.Message))
+                {
+                    await _js.ToastrError(_response.Message);
+                }
+                if (_response.Errors.Any())
+                {
+                    foreach (var error in _response.Errors)
+                    {
+                        await _js.ToastrError(error);
+                    }
+                }
+                // await _js.ToastrError("Error loading");
+                // await _js.InvokeVoidAsync("ShowToastr", "error", "Error loading");
             }
         }
     }

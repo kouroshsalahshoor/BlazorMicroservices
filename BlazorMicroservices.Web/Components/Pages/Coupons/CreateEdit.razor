@@ -1,11 +1,12 @@
 ﻿@page "/coupon/create"
 @page "/coupon/edit/{id:int}"
 @rendermode InteractiveServer
+@attribute [StreamRendering]
 
 @inherits OwningComponentBase<ICouponService>
 @* @inject ICouponService _service *@
 
-@inject IJSRuntime _js
+@* @inject IJSRuntime _js *@
 
 <link href="css/blazorValidation.css" rel="stylesheet" />
 
@@ -66,7 +67,7 @@
                 }
                 else
                 {
-                    await _js.ToastrError(response!.Message);
+                    // await _js.ToastrError(response!.Message);
                 }
             }
         }
@@ -92,7 +93,7 @@
             }
             else
             {
-                await _js.ToastrError(response!.Message);
+                // await _js.ToastrError(response!.Message);
             }
         }
     }
