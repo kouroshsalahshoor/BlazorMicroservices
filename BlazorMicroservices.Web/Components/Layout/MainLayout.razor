@@ -1,6 +1,6 @@
 ﻿@inherits LayoutComponentBase
 
-@inject CurrentUserService _currentUserService
+@* @inject CurrentUserService _currentUserService *@
 @* @inject AuthenticationStateProvider _authenticationStateProvider *@
 
 <div class="page">
@@ -16,7 +16,9 @@
                 <AuthorizeView>
                     <Authorized>
                         <a style="text-decoration: none;">
-                            Welcome @(_currentUserService == null ? "" : _currentUserService.User == null ? "" : _currentUserService.User.UserName)
+                            @* Welcome @context!.User!.Identity!.Name *@
+                            @* Welcome @(_currentUserService == null ? "" : _currentUserService.User == null ? "" : _currentUserService.User.UserName) *@
+                            Welcome @_userName
                         </a>
                         @* <a style="text-decoration: none;">Welcome @userName</a> *@
                         <a href="logout">Logout</a>
@@ -42,13 +44,19 @@
 </div>
 
 @code {
-    // [CascadingParameter]
-    // public Task<AuthenticationState> AuthState { get; set; }
+    [Inject] public AuthenticationStateProvider _authenticationStateProvider { get; set; }
 
-    private string userName { get; set; } = string.Empty;
+    private string _userName { get; set; } = string.Empty;
 
     protected async override Task OnInitializedAsync()
     {
+        var authstate = await _authenticationStateProvider.GetAuthenticationStateAsync();
+        var userNameClaim = authstate.User.Claims.SingleOrDefault(x => x.Type == "UserName");
+        if (userNameClaim is not null)
+        {
+            _userName = userNameClaim!.Value;
+        }
+
         // var authState = await AuthState;
         // var authState = await _authenticationStateProvider.GetAuthenticationStateAsync();
 

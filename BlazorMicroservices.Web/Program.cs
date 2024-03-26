@@ -3,9 +3,7 @@ using BlazorMicroservices.Web.Services;
 using BlazorMicroservices.Web.Services.IServices;
 using BlazorMicroservices.Web.Utilities;
 using BlazorMicroservices.Web.Utilities.AppStates;
-using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Components.Authorization;
-using System.Text;
 
 var builder = WebApplication.CreateBuilder(args);
 
