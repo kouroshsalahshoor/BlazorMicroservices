@@ -5,6 +5,8 @@ using BlazorMicroservices.Web.Utilities;
 using BlazorMicroservices.Web.Utilities.AppStates;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Components.Authorization;
+using Microsoft.IdentityModel.Tokens;
+using System.Text;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -12,14 +14,41 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddRazorComponents()
     .AddInteractiveServerComponents();
 
-builder.Services.AddHttpContextAccessor();
+//builder.Services.AddHttpContextAccessor();
 builder.Services.AddHttpClient();
 builder.Services.AddHttpClient<IAuthService, AuthService>();
 builder.Services.AddHttpClient<ICouponService, CouponService>();
 
-builder.Services.AddAuthentication(defaultScheme: JwtBearerDefaults.AuthenticationScheme);
+builder.Services.AddCascadingAuthenticationState();
+var apiSettingsSection = builder.Configuration.GetSection("ApiSettings:JwtOptions");
+builder.Services.Configure<JwtOptions>(apiSettingsSection);
+var jwtOptions = apiSettingsSection.Get<JwtOptions>();
+var key = Encoding.ASCII.GetBytes(jwtOptions.Secret);
+
+builder.Services.AddAuthentication(opt =>
+{
+    opt.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+    opt.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+    opt.DefaultScheme = JwtBearerDefaults.AuthenticationScheme;
+}).AddJwtBearer(x =>
+{
+    x.RequireHttpsMetadata = false;
+    x.SaveToken = true;
+    x.TokenValidationParameters = new()
+    {
+        ValidateIssuerSigningKey = true,
+        IssuerSigningKey = new SymmetricSecurityKey(key),
+        ValidateAudience = true,
+        ValidateIssuer = true,
+        ValidAudience = jwtOptions.Audience,
+        ValidIssuer = jwtOptions.Issuer,
+        ClockSkew = TimeSpan.Zero
+    };
+});
+//builder.Services.AddAuthentication(defaultScheme: JwtBearerDefaults.AuthenticationScheme).AddJwtBearer();
 builder.Services.AddAuthorization();
 builder.Services.AddScoped<AuthenticationStateProvider, AuthStateProvider>();
+
 
 SD.CouponApiBase = builder.Configuration["ServiceUrls:CouponApi"];
 SD.AuthApiBase = builder.Configuration["ServiceUrls:AuthApi"];

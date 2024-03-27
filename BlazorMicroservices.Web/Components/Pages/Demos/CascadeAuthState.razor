@@ -1,0 +1,54 @@
+﻿@page "/cascade-auth-state"
+@* @attribute [Authorize(Roles = "Admins")] *@
+@* @attribute [Authorize] *@
+
+<h1>Cascade Auth State</h1>
+
+<p>@authMessage</p>
+@* <p>@_user.Claims.FirstOrDefault(x=>x.Type == "role").Value</p> *@
+@* <p>@(_user.IsInRole(SD.Role_Admins) ? SD.Role_Admins : SD.Role_Users)</p> *@
+
+@* <AuthorizeView Roles="Admins">
+    <p>Hello Admin</p>
+</AuthorizeView>
+<AuthorizeView Roles="Users">
+    <p>Hello User</p>
+</AuthorizeView>
+<AuthorizeView>
+    <p>Hello, @context.User.Identity?.Name!</p>
+</AuthorizeView> *@
+
+@code {
+    private string authMessage = "The user is NOT authenticated.";
+
+    [Inject] public AuthenticationStateProvider _authenticationStateProvider { get; set; }
+    // [CascadingParameter]
+    // private Task<AuthenticationState>? authenticationState { get; set; }
+
+    private ClaimsPrincipal _user;
+
+    protected override async Task OnInitializedAsync()
+    {
+        var authState = await _authenticationStateProvider.GetAuthenticationStateAsync();
+        if (authState is not null)
+        {
+            _user = authState?.User;
+
+            if (_user?.Identity is not null && _user.Identity.IsAuthenticated)
+            {
+                authMessage = $"{_user.Claims.FirstOrDefault(x => x.Type == "name").Value} is authenticated.";
+            }
+        }
+
+        // if (authenticationState is not null)
+        // {
+        //     var authState = await authenticationState;
+        //     _user = authState?.User;
+
+        //     if (_user?.Identity is not null && _user.Identity.IsAuthenticated)
+        //     {
+        //         authMessage = $"{_user.Identity.Name} is authenticated.";
+        //     }
+        // }
+    }
+}
