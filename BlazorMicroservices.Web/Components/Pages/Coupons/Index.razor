@@ -1,12 +1,14 @@
 ﻿@page "/coupons"
 
-@attribute [Authorize]
+@* @attribute [Authorize] *@
 @* @attribute [Authorize(Roles = SD.Role_Admins)] *@
 @* @rendermode InteractiveServer *@
 @attribute [StreamRendering]
 
+@inject AuthenticationStateProvider _authenticationStateProvider
 @inject ICouponService _service
 @inject IJSRuntime _js
+@inject NavigationManager _navigationManager
 
 <PageTitle>Coupons</PageTitle>
 
@@ -56,10 +58,22 @@ else
 
     private List<CouponDto>? _items = new();
     ResponseDto? _response = null;
+    private ClaimsPrincipal _currentUser;
 
     protected override async Task OnInitializedAsync()
     {
-        await load();
+        var authstate = await _authenticationStateProvider.GetAuthenticationStateAsync();
+        _currentUser = authstate.User;
+
+        if (_currentUser?.Identity is not null && _currentUser.Identity.IsAuthenticated && 
+            _currentUser.Claims.FirstOrDefault(x => x.Type == "role")!.Value == SD.Role_Admins)
+        {
+            await load();
+        }
+        else
+        {
+            _navigationManager.NavigateTo("login?returnUrl=coupons");
+        }
     }
 
     private async Task load()
