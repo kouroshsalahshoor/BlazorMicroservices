@@ -51,7 +51,7 @@
     protected async override Task OnInitializedAsync()
     {
         var authstate = await _authenticationStateProvider.GetAuthenticationStateAsync();
-        var userNameClaim = authstate.User.Claims.SingleOrDefault(x => x.Type == "UserName");
+        var userNameClaim = authstate.User.Claims.SingleOrDefault(x => x.Type == "userName");
         if (userNameClaim is not null)
         {
             _userName = userNameClaim!.Value;

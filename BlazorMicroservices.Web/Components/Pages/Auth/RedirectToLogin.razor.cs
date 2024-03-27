@@ -10,7 +10,7 @@ namespace BlazorMicroservices.Web.Components.Pages.Auth
         [Inject]
         public NavigationManager _navigationManager { get; set; }
 
-        bool notAuthorized { get; set; } = false;
+        bool authorized { get; set; } = false;
 
         protected override async Task OnInitializedAsync()
         {
@@ -30,7 +30,7 @@ namespace BlazorMicroservices.Web.Components.Pages.Auth
             }
             else
             {
-                notAuthorized = true;
+                authorized = true;
             }
 
         }

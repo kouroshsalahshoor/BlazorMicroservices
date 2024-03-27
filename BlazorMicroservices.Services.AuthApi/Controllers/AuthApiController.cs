@@ -37,15 +37,12 @@ namespace BlazorMicroservices.Services.AuthApi.Controllers
                 return BadRequest(_response);
             }
 
-            bool roleResult = false;
             if (string.IsNullOrEmpty(dto.Role))
             {
-                roleResult = await _authService.AssignRole(dto.UserName, SD.Role_Users);
+                dto.Role = SD.Role_Users;
             }
-            else
-            {
-                roleResult = await _authService.AssignRole(dto.UserName, dto.Role);
-            }
+
+            bool roleResult = await _authService.AssignRole(dto.UserName, dto.Role);
 
             if (roleResult == false)
             {
@@ -72,14 +69,10 @@ namespace BlazorMicroservices.Services.AuthApi.Controllers
                 if (loginResponse.UserDto == null)
                 {
                     _response.IsSuccessful = false;
-                    _response.Message = "Username or password is incorrect";
-                    _response.Errors.Add("Username or password is incorrect");
+                    _response.Message = "Username or password is incorrect"; //"Invalid Authentication"
+                    _response.Errors.Add("Username or password is incorrect"); //"Invalid Authentication"
                     return BadRequest(_response);
                 }
-                //_response.IsSuccessful = false;
-                //_response.Message = "Invalid Authentication";
-                //_response.Errors.Add("Invalid Authentication");
-                //return Unauthorized(_response);
             }
 
             _response.Result = loginResponse;

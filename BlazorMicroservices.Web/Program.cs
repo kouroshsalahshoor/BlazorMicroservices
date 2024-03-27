@@ -3,6 +3,7 @@ using BlazorMicroservices.Web.Services;
 using BlazorMicroservices.Web.Services.IServices;
 using BlazorMicroservices.Web.Utilities;
 using BlazorMicroservices.Web.Utilities.AppStates;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Components.Authorization;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -11,12 +12,12 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddRazorComponents()
     .AddInteractiveServerComponents();
 
-//builder.Services.AddHttpContextAccessor();
+builder.Services.AddHttpContextAccessor();
 builder.Services.AddHttpClient();
-builder.Services.AddHttpClient<ICouponService, CouponService>();
 builder.Services.AddHttpClient<IAuthService, AuthService>();
+builder.Services.AddHttpClient<ICouponService, CouponService>();
 
-builder.Services.AddAuthentication();
+builder.Services.AddAuthentication(defaultScheme: JwtBearerDefaults.AuthenticationScheme);
 builder.Services.AddAuthorization();
 builder.Services.AddScoped<AuthenticationStateProvider, AuthStateProvider>();
 

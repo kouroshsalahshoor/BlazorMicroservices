@@ -7,7 +7,9 @@
 <CascadingAuthenticationState>
     <AuthorizeView>
         <Authorized>
-            <p>Welcome, @userName</p>
+            <p>Welcome, @_userName</p>
+            <p>Role: @(_role)</p>
+            <p>IsAuthenticated: @(context.User.Identity.IsAuthenticated ? "True" : "False")</p>
         </Authorized>
         <NotAuthorized>
             <p>Not Authorized (Not signed in!)</p>
@@ -18,15 +20,25 @@
 @code{
     [Inject] public AuthenticationStateProvider _authenticationStateProvider { get; set; }
     [Inject] public ProtectedLocalStorage _protectedLocalStorage { get; set; }
-    private string userName = string.Empty;
+    private string _userName = string.Empty;
+    private string _role = string.Empty;
+    private ClaimsPrincipal _user;
 
     protected async override Task OnInitializedAsync()
     {
         var authstate = await _authenticationStateProvider.GetAuthenticationStateAsync();
-        var userNameClaim = authstate.User.Claims.SingleOrDefault(x => x.Type == "UserName");
+        _user = authstate.User;
+
+        var userNameClaim = _user.Claims.SingleOrDefault(x => x.Type == "userName");
         if (userNameClaim is not null)
         {
-            userName = userNameClaim!.Value;
+            _userName = userNameClaim!.Value;
+        }
+
+        var roleClaim = _user.Claims.SingleOrDefault(x => x.Type == "role");
+        if (roleClaim is not null)
+        {
+            _role = roleClaim!.Value;
         }
 
         //getting current userDetails from localsorage

@@ -1,10 +1,8 @@
 ﻿using BlazorMicroservices.Web.Services.IServices;
 using BlazorMicroservices.Web.Utilities;
-using BlazorMicroservices.Web.Utilities.Auth;
 using Microsoft.AspNetCore.Components.Server.ProtectedBrowserStorage;
 using Newtonsoft.Json;
 using System.Net;
-using System.Net.Http.Headers;
 using System.Text;
 using static BlazorMicroservices.Web.Utilities.SD;
 

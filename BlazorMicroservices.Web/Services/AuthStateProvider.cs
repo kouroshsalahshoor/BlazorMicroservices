@@ -1,7 +1,10 @@
 ﻿using BlazorMicroservices.Web.Utilities;
 using BlazorMicroservices.Web.Utilities.Auth;
+using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Components.Authorization;
 using Microsoft.AspNetCore.Components.Server.ProtectedBrowserStorage;
+using System.IdentityModel.Tokens.Jwt;
 using System.Net.Http.Headers;
 using System.Security.Claims;
 
@@ -29,8 +32,8 @@ namespace BlazorMicroservices.Web.Services
                 {
                     return new AuthenticationState(new ClaimsPrincipal(new ClaimsIdentity()));
                 }
-                _httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("bearer", token);
-                return new AuthenticationState(new ClaimsPrincipal(new ClaimsIdentity(JwtParser.ParseClaimsFromJwt(token), "jwtAuthType")));
+                _httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue(JwtBearerDefaults.AuthenticationScheme, token);
+                return new AuthenticationState(new ClaimsPrincipal(new ClaimsIdentity(JwtParser.ParseClaimsFromJwt(token), JwtBearerDefaults.AuthenticationScheme)));
             }
             catch (Exception)
             {
@@ -44,7 +47,7 @@ namespace BlazorMicroservices.Web.Services
 
         public void NotifyUserLoggedIn(string token)
         {
-            var claimsPrincipal = new ClaimsPrincipal(new ClaimsIdentity(JwtParser.ParseClaimsFromJwt(token), "jwtAuthType"));
+            var claimsPrincipal = new ClaimsPrincipal(new ClaimsIdentity(JwtParser.ParseClaimsFromJwt(token), JwtBearerDefaults.AuthenticationScheme));
             var authState = Task.FromResult(new AuthenticationState(claimsPrincipal));
             NotifyAuthenticationStateChanged(authState);
         }

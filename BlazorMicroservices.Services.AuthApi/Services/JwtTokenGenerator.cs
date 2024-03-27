@@ -11,6 +11,7 @@ namespace BlazorMicroservices.Services.AuthApi.Services
 {
     public class JwtTokenGenerator : IJwtTokenGenerator
     {
+        //getting settings i form of a class
         private readonly JwtOptions _jwtOptions;
         public JwtTokenGenerator(IOptions<JwtOptions> jwtOptions)
         {
@@ -23,14 +24,15 @@ namespace BlazorMicroservices.Services.AuthApi.Services
 
             var claims = new List<Claim>
             {
-                new Claim("Id",applicationUser.Id),
-                new Claim("Email",applicationUser.Email),
-                new Claim("UserName",applicationUser.UserName),
-                new Claim("FirstName",applicationUser.FirstName),
-                new Claim("LastName",applicationUser.LastName),
-                new Claim("PhoneNumber",applicationUser.PhoneNumber),
-                new Claim("Name",applicationUser.UserName),
-                new Claim(ClaimTypes.Name,applicationUser.UserName),
+                new Claim(JwtRegisteredClaimNames.Sub, applicationUser.Id),
+                new Claim(JwtRegisteredClaimNames.Email, applicationUser.Email!),
+                new Claim(JwtRegisteredClaimNames.Name, applicationUser.UserName !),
+                new Claim(ClaimTypes.Name, applicationUser.UserName!),
+
+                new Claim("userName", applicationUser.UserName!),
+                new Claim("firstName", applicationUser.FirstName),
+                new Claim("lastName", applicationUser.LastName),
+                new Claim("phoneNumber", applicationUser.PhoneNumber !),
             };
 
             claims.AddRange(roles.Select(role => new Claim(ClaimTypes.Role, role)));

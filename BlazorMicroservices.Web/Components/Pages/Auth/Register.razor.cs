@@ -14,7 +14,7 @@ namespace BlazorMicroservices.Web.Components.Pages.Auth
 
 
         private RegisterRequestDto _model = new();
-        private bool _isProcessing { get; set; } = false;
+        private bool _loading { get; set; } = false;
         private List<string> _roles { get; set; } = new();
         private List<string> _errors { get; set; } = new();
 
@@ -27,7 +27,7 @@ namespace BlazorMicroservices.Web.Components.Pages.Auth
         private async Task onValidSubmit()
         {
             _errors.Clear();
-            _isProcessing = true;
+            _loading = true;
 
             var result = await _authSerivce!.Register(_model);
             if (result is null)
@@ -47,7 +47,7 @@ namespace BlazorMicroservices.Web.Components.Pages.Auth
                 }
             }
             
-            _isProcessing = false;
+            _loading = false;
         }
     }
 }

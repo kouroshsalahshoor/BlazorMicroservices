@@ -1,19 +1,19 @@
 ﻿@page "/register"
-@rendermode InteractiveServer
+@* @rendermode InteractiveServer *@
 
 <PageTitle>Register</PageTitle>
 
 <EditForm Model="_model" OnValidSubmit="onValidSubmit" class="pt-4">
     <DataAnnotationsValidator />
 
-    @if (_isProcessing)
+    @if (_loading)
     {
         <p>Processing ...</p>
     }
 
     <div class="py-4">
         <div class=" row form-group ">
-            <div class="col-md-6 offset-md-3 ">
+            <div class="col-lg-6 offset-lg-3 offset-sm-0">
                 <div class="card border">
                     <div class="card-body px-lg-5 pt-4">
 
@@ -60,7 +60,7 @@
 
                         <div class="py-2">
                             <InputSelect @bind-Value="_model.Role" class="form-select">
-                                <option value="" disabled selected>Please Select a Role ...</option>
+                                @* <option value="" disabled selected>Please Select a Role ...</option> *@
                                 @foreach (var item in _roles)
                                 {
                                     <option value="@item">@item</option>

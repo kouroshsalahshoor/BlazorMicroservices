@@ -61,7 +61,11 @@ namespace BlazorMicroservices.Web.Services
                 Data = dto
             });
 
-            if (response is not null)
+            if (response is null)
+            {
+                return new ResponseDto { IsSuccessful = false, Message = "Login failed!", Errors = new List<string> { "Login No response!" } };
+            }
+            else
             {
                 if (response.IsSuccessful)
                 {
@@ -87,7 +91,7 @@ namespace BlazorMicroservices.Web.Services
                 }
             }
 
-            return new ResponseDto { IsSuccessful = false, Message = "Login failed!", Errors = new List<string> { "Login failed!", "No response!" } };
+            return new ResponseDto { IsSuccessful = false, Message = "Login failed!", Errors = new List<string> { "Login failed!" } };
         }
         //public async Task<ResponseDto> Login(LoginRequestDto dto)
         //{

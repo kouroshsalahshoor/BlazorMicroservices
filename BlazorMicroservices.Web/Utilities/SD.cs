@@ -13,8 +13,8 @@
             DELETE
         }
 
-        public const string JwtToken = "JWT Token";
-        public const string UserDetails = "User Details";
+        public const string JwtToken = "JWTToken";
+        public const string UserDetails = "UserDetails";
 
         public const string Role_Admins = "Admins";
         public const string Role_Users = "Users";

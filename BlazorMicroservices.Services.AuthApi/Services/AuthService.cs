@@ -35,7 +35,9 @@ namespace BlazorMicroservices.Services.AuthApi.Services
                 NormalizedEmail = dto.Email.ToUpper(),
                 FirstName = dto.FirstName,
                 LastName = dto.LastName,
-                PhoneNumber = dto.PhoneNumber
+                PhoneNumber = dto.PhoneNumber,
+                EmailConfirmed = true,
+                PhoneNumberConfirmed = true,
             };
 
             try
@@ -43,18 +45,18 @@ namespace BlazorMicroservices.Services.AuthApi.Services
                 var result = await _userManager.CreateAsync(user, dto.Password);
                 if (result.Succeeded)
                 {
-                    var userToReturn = _db.ApplicationUsers.First(u => u.UserName == dto.UserName);
+                    var userInDb = _db.ApplicationUsers.First(u => u.UserName == dto.UserName);
 
-                    if (userToReturn != null)
+                    if (userInDb != null)
                     {
                         UserDto userDto = new()
                         {
-                            Id = userToReturn.Id,
-                            UserName = userToReturn.UserName!,
-                            Email = userToReturn.Email!,
-                            FirstName = userToReturn.FirstName,
-                            LastName = userToReturn.LastName,
-                            PhoneNumber = userToReturn.PhoneNumber!
+                            Id = userInDb.Id,
+                            UserName = userInDb.UserName!,
+                            Email = userInDb.Email!,
+                            FirstName = userInDb.FirstName,
+                            LastName = userInDb.LastName,
+                            PhoneNumber = userInDb.PhoneNumber!
                         };
 
                         return new RegisterResponseDto
